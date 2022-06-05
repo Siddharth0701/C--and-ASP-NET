@@ -1,0 +1,24 @@
+ if(RadioButton1.Checked)
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource1;
+            GridView1.Visible = true;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+        }
+        if (RadioButton2.Checked)
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource2;
+            GridView1.Visible = true;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+        }
+        if (RadioButton3.Checked)
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource3;
+            GridView1.Visible = true;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+        }

@@ -1,0 +1,22 @@
+Important Properties in PieChart Asp.Net
+-------------------------------------------
+
+ChartHeight="400" 
+
+ChartWidth="400" 
+
+ChartTitle="Result Status - Different Courses Percentage Based" 
+
+ChartTitleColor="RED"
+
+ <ajaxToolkit:PieChartValue Category="B.Com" Data="85" PieChartValueColor="GREEN" />
+ 
+ <ajaxToolkit:PieChartValue Category="B.Tech" Data="78" PieChartValueColor="YELLOW" />
+ 
+ <ajaxToolkit:PieChartValue Category="BCA" Data="67" PieChartValueColor="BROWN" />
+ 
+ <ajaxToolkit:PieChartValue Category="MCA" Data="59" PieChartValueColor="BLUE" />
+
+
+
+--------------------------------------------

@@ -1,0 +1,34 @@
+Controller Coding ( HomeController )
+------------------------
+
+Important Namespaces
+---------------------
+
+using System.IO;
+
+---------------------
+
+            String Path = Server.MapPath("~/images/");
+            String[] imagefiles = Directory.GetFiles(Path);
+            ViewBag.imagearray = imagefiles;
+            return View();
+
+
+-----------------------
+
+
+View Coding ( Index.cshtml )
+----------------------
+
+<h1>Hariti Study Hub</h1>
+    <h4>Display Images From Server Folder in Asp.Net MVC</h4>
+    <div> 
+        @foreach (var imgfile in ViewBag.imagearray)
+        {
+           
+            <img src="~/images/@Path.GetFileName(imgfile)"/>
+            <br/>
+        }
+    </div>
+
+-----------------

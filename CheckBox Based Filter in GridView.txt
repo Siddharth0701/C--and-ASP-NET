@@ -1,0 +1,50 @@
+String filterdata="";
+            if (CheckBox1.Checked)
+            {
+                if (CheckBox2.Checked || CheckBox3.Checked)
+                {
+                    filterdata = "'Amritsar',";
+
+                }
+                else
+                {
+                    filterdata = "'Amritsar'";
+                }
+            }
+            if(CheckBox2.Checked)
+            {
+                if (CheckBox3.Checked)
+                {
+                    filterdata = filterdata+"'Jalandhar',";
+
+                }
+                else
+                {
+                    filterdata = filterdata+"'Jalandhar'";
+                }
+                
+            }
+
+            if (CheckBox3.Checked)
+            {
+                filterdata = filterdata+"'Delhi'";
+            }
+
+            
+
+
+            String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=True";
+            SqlConnection con = new SqlConnection(mycon);
+            con.Open();
+            String myquery = "Select * from StudentInfo where city in("+filterdata+")";
+            
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = myquery;
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            GridView1.DataSource = ds;
+            GridView1.DataBind();
+            con.Close();

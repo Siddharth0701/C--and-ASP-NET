@@ -1,0 +1,54 @@
+Connection String in WebConfig File
+---------------------------------------  
+
+    <connectionStrings>
+        <add name="mydatabase" connectionString="Data Source=sql.freeasphost.net\MSSQL2016;Initial Catalog=haritistudy_collegedata;User ID=haritistudy;Password=123456"
+            providerName="System.Data.SqlClient" />
+    </connectionStrings>
+
+----------------------------------------
+
+
+Important Namespaces Used
+--------------------------
+
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+-------------------------
+
+Search Button Click Event Coding
+-------------------------
+
+        String myquery = "Select * from studentdata where rollno=" + TextBox1.Text;
+        String mycon = ConfigurationManager.ConnectionStrings["mydatabase"].ConnectionString;
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            Label3.Text = "Roll Number Has Been Found.";
+            Label3.ForeColor = System.Drawing.Color.Green;
+            TextBox2.Text = ds.Tables[0].Rows[0]["sname"].ToString();
+            TextBox3.Text = ds.Tables[0].Rows[0]["fathername"].ToString();
+            TextBox4.Text = ds.Tables[0].Rows[0]["mothername"].ToString();
+        }
+        else
+        {
+           Label3.Text = "Roll Number Not Found";
+            Label3.ForeColor = System.Drawing.Color.Red;
+            TextBox2.Text = "";
+            TextBox3.Text = "";
+            TextBox4.Text = "";
+
+
+        }
+        con.Close();
+
+-------------------------

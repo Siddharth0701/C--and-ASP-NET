@@ -1,0 +1,43 @@
+Coding For Search Button
+----------------------------------------------------------------------------
+       
+ if (DropDownList1.SelectedItem.Text=="Roll No")
+        {
+            GridView1.DataSourceID = "";
+
+            GridView1.DataSource = SqlDataSource1;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+            GridView1.Visible = true;
+
+
+
+
+        }
+        if (DropDownList1.SelectedItem.Text == "Student Name")
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource2;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+            GridView1.Visible = true;
+
+        }
+        if (DropDownList1.SelectedItem.Text == "Class")
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource3;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+            GridView1.Visible = true;
+
+        }
+        if (DropDownList1.SelectedItem.Text == "City")
+        {
+            GridView1.DataSourceID = "";
+            GridView1.DataSource = SqlDataSource4;
+            GridView1.DataBind();
+            Label3.Text = GridView1.Rows.Count.ToString() + " Record Found";
+            GridView1.Visible = true;
+
+        }

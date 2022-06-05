@@ -1,0 +1,105 @@
+SQL Statement For Stored Procedure
+-----------------------------------
+
+use collegedata
+create procedure StudentDataInsert
+(
+   @rollno int,
+   @sname varchar(50),
+   @fname varchar(50),
+   @mname varchar(50)
+)
+as 
+begin
+insert into studentdata(rollno,sname,fathername,mothername)
+values(@rollno,@sname,@fname,@mname)
+end
+
+
+--------------------------------
+
+Important Namespaces
+--------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+---------------------
+
+Controller Coding
+---------------------
+
+ public ActionResult SaveData()
+        {
+            ViewBag.result = "";
+            return View();
+        }
+        [HttpPost]
+        public ActionResult SaveData(string rollno, string sname, string fname, string mname)
+        {
+            String constring = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "StudentDataInsert"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@rollno", Convert.ToInt16(rollno));
+            com.Parameters.AddWithValue("@sname", sname);
+            com.Parameters.AddWithValue("@fname", fname);
+            com.Parameters.AddWithValue("@mname", mname);
+            com.ExecuteNonQuery();
+            sqlcon.Close();
+            ViewBag.result = "Record Has Been Saved Successfully";
+            return View();
+        }
+
+
+----------------------
+
+View Coding
+----------------------
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SaveData</title>
+</head>
+<body>
+    <h1>Hariti Study Hub</h1>
+    <h3><font color="RED">Insert Data With Stored Procedure in Asp.Net MVC C#.</font></h3>
+    <div>
+        <form action="/Home/SaveData" method="post">
+            <table border="1" bgcolor="#00FF00" height="300" width="300">
+                <tr>
+                    <td>Roll Number</td>
+                    <td><input type="text" name="rollno" /></td>
+                </tr>
+                <tr>
+                    <td>Student Name</td>
+                    <td><input type="text" name="sname" /></td>
+                </tr>
+                <tr>
+                    <td>Father Name</td>
+                    <td><input type="text" name="fname" /></td>
+                </tr>
+                <tr>
+                    <td>Mother Name</td>
+                    <td><input type="text" name="mname" /></td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Save Data" /></td>
+                </tr>
+            </table>
+            @ViewBag.result
+        </form>
+    </div>
+</body>
+</html>

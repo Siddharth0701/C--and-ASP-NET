@@ -1,0 +1,95 @@
+Important Namespaces
+--------------------
+
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.IO;
+
+---------------
+
+PageLoad Coding
+--------------
+
+  if (!IsPostBack)
+        {
+            Bind();
+
+        }
+
+----------------
+
+User Defined Method
+----------------
+
+ public void Bind()
+    {
+        String mycon = ConfigurationManager.ConnectionStrings["MovieBollywoodConnectionString"].ConnectionString;
+        String myquery = "Select * from MovieList";
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        GridView1.DataSource = ds;
+        GridView1.DataBind();
+        con.Close();
+    }
+
+----------------
+
+
+GridView Row Editing Event Coding
+---------------
+
+GridView1.EditIndex = e.NewEditIndex;
+        Bind();
+
+---------------
+
+GridView Row Edit Cancelling Coding
+
+--------------
+
+GridView1.EditIndex = -1;
+        Bind();
+
+------------
+
+GridView PageIndexing Changed Coding
+------------
+
+GridView1.PageIndex = e.NewPageIndex;
+        Bind();
+
+-----------
+
+GridView Row Updating Coding
+-----------
+
+int index = e.RowIndex;
+        GridViewRow row = (GridViewRow)GridView1.Rows[index];
+        TextBox text1 = (TextBox)row.FindControl("TextBox1");
+        FileUpload fu = (FileUpload)row.FindControl("FileUpload1");
+        Label label1 = (Label)row.FindControl("Label5");
+        Random rand = new Random((int)DateTime.Now.Ticks);
+        int numIterations = 0;
+        numIterations = rand.Next(1, 1000);
+        String constring = ConfigurationManager.ConnectionStrings["MovieBollywoodConnectionString"].ConnectionString;
+        SqlConnection sqlcon = new SqlConnection(constring);
+        fu.SaveAs(Server.MapPath("~/pic/") + numIterations + Path.GetFileName(fu.FileName));
+        String link = "pic/" + numIterations + Path.GetFileName(fu.FileName);
+        String updatedata = "Update movielist set moviename='" + text1.Text + "', picture='" + link + "' where movieid=" + label1.Text;
+        sqlcon.Open();
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = sqlcon;
+        cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        GridView1.EditIndex = -1;
+        Bind();
+
+-----------------

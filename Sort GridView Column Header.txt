@@ -1,0 +1,69 @@
+
+Important NameSpaces
+---------------------------
+using System.Data;
+using System.Data.SqlClient;
+---------------------------
+
+
+
+
+Page Load Coding
+---------------------------
+
+ if (ViewState["sorting"]==null)
+            {
+                String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=True";
+                String myquery = "Select * from studentInfo";
+                SqlConnection con = new SqlConnection(mycon);
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandText = myquery;
+                cmd.Connection = con;
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = cmd;
+                DataSet ds = new DataSet();
+                da.Fill(ds);
+                GridView1.DataSource = ds;
+                GridView1.DataBind();
+            }
+
+
+---------------------------
+
+
+
+
+
+Sorting Event of GridView
+---------------------------
+String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=True";
+            String myquery = "Select * from studentInfo";
+            SqlConnection con = new SqlConnection(mycon);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = myquery;
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            con.Close();
+            DataTable dt = ds.Tables[0];
+            DataView dv = new DataView(dt);
+            if (ViewState["sorting"]== "DESC" | ViewState["sorting"]== null)
+            {
+                dv.Sort = e.SortExpression + " ASC";
+                ViewState["sorting"] = "ASC";
+                Label3.Text = "List in Ascending Order";
+            }
+            else if (ViewState["sorting"].ToString()== "ASC")
+            {
+
+                dv.Sort = e.SortExpression + " DESC";
+                ViewState["sorting"] = "DESC";
+                Label3.Text = "List in Descending Order";
+            }
+
+
+            GridView1.DataSource = dv;
+            GridView1.DataBind();
+---------------------------

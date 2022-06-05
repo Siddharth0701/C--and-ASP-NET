@@ -1,0 +1,69 @@
+use StudentData
+create procedure UpdateStudent1
+(
+  @strollno int,
+  @stname varchar(50),
+  @stfname varchar(50),
+  @stcity varchar(50)
+)
+as
+begin 
+update studentinfo set sname=@stname, fname=@stfname, city=@stcity where srollno=@strollno
+end
+--------
+create procedure SearchStudent3
+(
+  @strollno int
+)
+as
+begin
+Select * from studentinfo where srollno=@strollno
+end
+
+------------------------
+Search Coding
+
+String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "SearchStudent3"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@strollno", Convert.ToInt32(TextBox1.Text));
+            SqlDataReader dr;
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                TextBox2.Text = dr["sname"].ToString();
+                TextBox3.Text = dr["fname"].ToString();
+                TextBox4.Text = dr["city"].ToString();
+                Label2.Text = "Data Has Been Found";
+            }
+            else
+            {
+                TextBox2.Text = "";
+                TextBox3.Text = "";
+                TextBox4.Text = "";
+                Label2.Text = "Data Has Not Been Found";
+            }
+
+
+            sqlcon.Close();
+
+----
+
+Update Coding
+
+String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "UpdateStudent1"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@strollno", Convert.ToInt32(TextBox1.Text));
+            com.Parameters.AddWithValue("@stname", TextBox2.Text.ToString());
+            com.Parameters.AddWithValue("@stfname", TextBox3.Text.ToString());
+            com.Parameters.AddWithValue("@stcity", TextBox4.Text.ToString());
+            com.ExecuteNonQuery();
+            sqlcon.Close();
+            Label3.Text = "Data Has Been Updated in Database";

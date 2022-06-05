@@ -1,0 +1,17 @@
+ <HeaderTemplate>
+        <table border="1">
+        <tr bgcolor=aqua><th>Rollno</th>
+        <th>Name</th>
+        <th>Father Name</th>
+        <th>City</th>
+        </tr>
+        </HeaderTemplate>
+        <ItemTemplate>
+        <tr bgcolor=yellow><td><%#Eval("srollno")%></td>
+       <td><%#Eval("sname")%></td>
+        <td><%#Eval("fname")%></td>
+        <td><%#Eval("city")%></td></tr>
+        </ItemTemplate>
+       <FooterTemplate>
+       </table>
+       </FooterTemplate>

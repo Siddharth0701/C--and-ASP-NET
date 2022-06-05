@@ -1,0 +1,56 @@
+Controller ( Home )
+-------------------
+
+ public ActionResult Index()
+        {
+            ViewBag.maleoption = "checked";
+            ViewBag.femaleoption = "";
+
+            ViewBag.result = "";
+            return View();
+        }
+
+--------------------
+        [HttpPost]
+
+        public ActionResult Index(string gender)
+        {
+            ViewBag.result ="You Have Selected "+gender.ToString();
+            if(gender=="Male")
+            {
+                ViewBag.maleoption = "checked";
+                ViewBag.femaleoption = "";
+            }
+            if (gender == "Female")
+            {
+                ViewBag.maleoption = "";
+                ViewBag.femaleoption = "checked";
+            }
+
+            return View();
+        }
+
+
+------------------------------------
+
+View Coding ( Index )
+---------------------
+
+<h1>Hariti Study Hub</h1>
+    <h3><font color="RED">How to Use Radio Button in Asp.Net MVC</font></h3>
+    <div>
+        <form action="/Home/Index" method="post">
+            <table border="1" bgcolor="YELLOW" height="100" width="300">
+                <tr>
+                    <td>Select Gender</td>
+                    <td><input @ViewBag.maleoption name="Gender" type="radio" value="Male">Male<br/><input @ViewBag.femaleoption   name="Gender" type="radio" value="Female" />Female</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+            @ViewBag.result
+        </form>
+    </div>
+
+-----------------------

@@ -1,0 +1,74 @@
+Important Namespaces
+----------------------
+using System.Data.OleDb;
+using System.Data;
+
+----------------------
+
+
+
+
+Object Declaration
+--------------------
+        public OleDbConnection con;
+        public OleDbCommand com;
+        public OleDbDataAdapter dad;
+        public DataSet ds;
+
+--------------------
+
+
+
+Page Load Coding
+--------------------
+
+if (!IsPostBack)
+            {
+                fillGridData();
+
+            }
+
+---------------------
+
+Save Button Click Coding
+-------------------------
+            con = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + Server.MapPath("~/App_Data/CustomerDatabase.accdb") + "; Persist Security Info=False");
+            con.Open();
+            String data1;
+            String cid;
+            String cname;
+            String city;
+            String contact;
+            cid = (GridView1.FooterRow.FindControl("TextBox1") as TextBox).Text;
+            cname = (GridView1.FooterRow.FindControl("TextBox2") as TextBox).Text;
+            city = (GridView1.FooterRow.FindControl("TextBox3") as TextBox).Text;
+            contact = (GridView1.FooterRow.FindControl("TextBox4") as TextBox).Text;
+            data1 = "insert into customerdetail values(" + cid + ",'" + cname+ "','" + city  + "','" + contact + "')";
+            com = new OleDbCommand(data1, con);
+            com.ExecuteNonQuery();
+            con.Close();
+            fillGridData();
+            Label6.Text = "Data Has Been Saved in Database Successfully";
+
+-------------------------
+
+
+
+
+
+Coding for Private Method
+--------------------------
+
+private void fillGridData()
+        {
+            con = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + Server.MapPath("~/App_Data/CustomerDatabase.accdb") + "; Persist Security Info=False");
+            con.Open();
+            dad = new OleDbDataAdapter("select * from customerdetail", con);
+            ds = new DataSet();
+            dad.Fill(ds);
+            GridView1.DataSource = ds;
+            GridView1.DataBind();
+        }
+
+
+----------------------------

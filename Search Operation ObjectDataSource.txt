@@ -1,0 +1,20 @@
+
+
+
+
+
+ public DataSet GetCustomerDetail(String customername)
+        {
+            String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=customerdatabase; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String query = "select * from customerdetail where customername like '%" + customername + "%'";
+            SqlCommand sqlcmd = new SqlCommand();
+            sqlcmd.CommandText = query;
+            sqlcmd.Connection = sqlcon;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = sqlcmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            return ds;
+
+        }

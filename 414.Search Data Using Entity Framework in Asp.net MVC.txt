@@ -1,0 +1,101 @@
+Coding For Controller
+--------------------
+
+ public class SearchDataController : Controller
+    {
+        // GET: SearchData
+        public ActionResult Index()
+        {
+            ViewBag.searchresult = "";
+            StudentData sd = new StudentData();
+            sd.rollno = 0;
+            sd.sname = "";
+            sd.mothername = "";
+            sd.fathername = "";
+
+            return View(sd);
+        }
+        [HttpPost]
+        public ActionResult Index(StudentData std1)
+        {
+            int srollno = Convert.ToInt16(std1.rollno);
+            collegedataEntities std = new collegedataEntities();
+            StudentData student = (from s in std.StudentDatas where s.rollno == srollno select s).FirstOrDefault();
+            if (student==null)
+            {
+
+                ViewBag.searchresult = "Roll Number Not Found";
+                StudentData data = new StudentData();
+                data.rollno=std1.rollno;
+                data.sname = "";
+                data.fathername = "";
+                data.mothername = "";
+                ModelState.Clear();
+                return View(data);
+            }
+            else
+            {
+                ViewBag.searchresult = "Roll Number Has Been Found";
+                ModelState.Clear();
+                return View(student);
+
+            }
+            
+        }
+    }
+
+---------------------------
+
+Coding for View
+-----------------
+
+@model Search_Data_with_Entity_Framework_in_MVC.Models.StudentData
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hariti Study Hub</h1>
+    <h4>Search Data into SQL Database Using Entity Framework Asp.Net MVC</h4>
+    <div>
+        @using (Html.BeginForm("Index", "SearchData", FormMethod.Post))
+        {
+            <table border="1" bgcolor="lightgreen" width="400px" height="250px">
+                <tr>
+                    <td>Roll Number</td>
+                    <td>@Html.TextBoxFor(m => m.rollno,"{0:#.#}") <input type="submit" value="Search" />
+                    <br/>
+                    <font color="Green">@ViewBag.searchresult</font>    
+                    </td>
+                </tr>
+                <tr>
+                    <td>Student Name</td>
+                    <td>@Html.TextBoxFor(m => m.sname)</td>
+                </tr>
+                <tr>
+                    <td>Father Name</td>
+                    <td>@Html.TextBoxFor(m => m.fathername)</td>
+                </tr>
+                <tr>
+                    <td>Mother Name</td>
+                    <td>@Html.TextBoxFor(m => m.mothername)</td>
+                </tr>
+            </table>
+        }
+    </div>
+    
+   
+
+</body>
+</html>
+
+
+-------------------------------

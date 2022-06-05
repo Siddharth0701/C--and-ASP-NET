@@ -1,0 +1,70 @@
+AsyncFileUpload is an Asp.net Ajax Toolkit Control That Allows us to asynchronously upload file to servers. We can check the uploaded files both at client and server side.
+-----------------------------------------------
+
+
+
+Important Properties of AsyncFileUpload
+----------------------------------------
+
+<ajaxToolkit:AsyncFileUpload ID="AsyncFileUpload1" runat="server" Height="34px" 
+
+ThrobberID="Image1" 
+
+OnClientUploadComplete="fileuploaded" 
+
+
+OnUploadedComplete="AsyncFileUpload1_UploadedComplete" />
+
+
+
+----------------------------------------
+
+ClientSide Java Script Function
+----------------------------------------
+
+<script type="text/javascript">
+		function fileuploaded() {
+		    alert("File Uploaded Successfully ");
+		    document.getElementById("Label3").innerHTML = "File Uploaded Completed ";
+		}
+	</script>
+
+-----------------------------------------
+
+Important NameSpace Used
+-----------------------------------------
+
+Using System.Io;
+
+-----------------------------------------
+
+
+
+
+
+
+UploadedComplete Event of AsyncFileUpload
+------------------------------------------
+
+ System.Threading.Thread.Sleep(10000);
+        AsyncFileUpload1.SaveAs(Server.MapPath("~/UploadedFiles/") + Path.GetFileName(AsyncFileUpload1.FileName));
+        
+        Label3.Text = "Uploading Completed Successfully";
+
+
+-----------------------------------------
+
+Web.Config File
+-----------------------------------------
+
+<httpRuntime executionTimeout="110" maxRequestLength="2000000" />
+
+<system.webServer>
+    <security>
+      <requestFiltering>
+        <requestLimits  maxAllowedContentLength="104857600"></requestLimits>
+      </requestFiltering>
+    </security>
+  </system.webServer>
+
+------------------------------------------

@@ -1,0 +1,29 @@
+use studentdata
+create procedure StudentDataInsert
+(
+   @srollno int,
+   @sname varchar(50),
+   @fname varchar(50),
+   @city varchar(50)
+)
+as 
+begin
+insert into studentinfo(srollno,sname,fname,city)
+values(@srollno,@sname,@fname,@city)
+end
+
+-----
+
+            String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "StudentDataInsert"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@srollno", TextBox1.Text.ToString());
+            com.Parameters.AddWithValue("@sname", TextBox2.Text.ToString());
+            com.Parameters.AddWithValue("@fname", TextBox3.Text.ToString());
+            com.Parameters.AddWithValue("@city", TextBox4.Text.ToString());
+            com.ExecuteNonQuery();
+            sqlcon.Close();
+            Label2.Text = "Data Has Been Saved in Database";

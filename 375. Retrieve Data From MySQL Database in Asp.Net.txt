@@ -1,0 +1,27 @@
+Important Namespaces Used
+-------------------------
+
+using MySql.Data.MySqlClient;
+using System.Data;
+
+-------------------------
+
+Retrieve Data Button Click Event
+================================
+
+String mycon = "Data Source = localhost;port=3306; Initial Catalog=CollegeData; UserId=root; password=123456; sslmode=none";
+        String myquery = "Select * from studentdata";
+        MySqlConnection con = new MySqlConnection(mycon);
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        MySqlDataAdapter da = new MySqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        GridView1.DataSource = ds;
+        GridView1.DataBind();
+        con.Close();
+        Label3.Text = "Data Retrieved From MYSQL Table Successfully";
+
+------------------------------------

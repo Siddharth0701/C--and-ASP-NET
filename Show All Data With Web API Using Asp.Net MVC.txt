@@ -1,0 +1,87 @@
+Web API Coding
+----------------
+
+Important Namespaces Used
+----------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+----------------------
+
+
+    public class SearchDataController : ApiController
+    {
+        [HttpGet]
+         public string GetAllStudents()
+        {
+            String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=True";
+            String myquery = "Select * from studentdata";
+            SqlConnection con = new SqlConnection(mycon);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = myquery;
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            //DataTable firstTable = ds.Tables[0];
+            return ds.GetXml() ;
+           
+        }
+
+    }
+
+
+----------------------
+
+View Coding
+=============
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/jquery/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#button1").click(function () {
+                
+
+                $.getJSON("/api/SearchData", function (data) {
+                    
+                   
+                    var xmlDoc = $.parseXML(data);
+                    
+
+                    $("#ShowTable").empty();
+
+                    $("#ShowTable").append("<table border=1 ><thead><tr><th>Roll No</th><th>Student Name</th><th>Father Name</th><th>Mother Name</th></tr></thead><tbody></tbody></table>");
+                    $(xmlDoc).find('Table').each(function() {
+                        $("#ShowTable table tbody").append("<tr><td>"+$(this).find('rollno').text()+"</td><td>"+$(this).find('sname').text()+"</td><td>"+$(this).find('fathername').text()+"</td><td>"+$(this).find('mothername').text()+"</td></tr>");
+                   
+                    })
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <div> 
+        <h1>Hariti Study Hub</h1>
+        <h4><font color="red">How to Show All Data From Table Using Web API and Asp.net MVC</font></h4>
+        <input type="button" name="showdata" id="button1" value="Click to Show All Data" /><hr/>
+    </div>
+    <div id="ShowTable"></div>
+</body>
+</html>
+
+
+===================

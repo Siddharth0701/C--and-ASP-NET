@@ -1,0 +1,46 @@
+Controller Coding
+-----------------
+
+ [HttpPost]
+        public ActionResult Index(string factnumber)
+        {
+            int number = Convert.ToInt32(factnumber);
+            int factorial=1;
+            for(int i=1;i<=number;i++)
+            {
+                factorial = factorial * i;
+
+            }
+            ViewBag.result = "Factorial of "+factnumber+ " is " +factorial.ToString();
+            return View();
+        }
+
+-----------------
+
+View Coding
+-------------
+
+<h1>Hariti Study Hub</h1>
+    <h3><font color="RED">Find Factorial of Any Number in Asp.net MVC</font></h3>
+    <div>
+        <form action="/FindFactorial/Index" method="post">
+            <table border="1" bgcolor="YELLOW" height="150" width="300">
+                <tr>
+                    <td>Enter Any Number</td>
+                    <td><input type="text" name="factnumber" /></td>
+                </tr>
+              
+
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="Calculate Factorial" /></td>
+                </tr>
+
+            </table>
+            <br/>
+            <br/>
+            <b>@ViewBag.result</b>
+
+        </form>
+    </div>
+
+-------------------

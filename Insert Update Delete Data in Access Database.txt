@@ -1,0 +1,8 @@
+Sample For Query Change in Source Code 
+----------------------------------------
+
+DeleteCommand="DELETE FROM [StudentDetails] WHERE (([srollno] = @srollno))
+
+UPDATE [StudentDetails] SET [sname] = @sname, [fathername] = @fathername, [class] = @class WHERE (([srollno] = @srollno))
+
+----------------------------------------

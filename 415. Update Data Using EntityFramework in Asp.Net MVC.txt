@@ -1,0 +1,145 @@
+Controller Coding
+------------------
+
+public class UpdateDataController : Controller
+    {
+        // GET: UpdateData
+        public ActionResult Index()
+        {
+            ViewBag.searchresult = "";
+            ViewBag.updateresult = "";
+            StudentData sd = new StudentData();
+            sd.rollno = 0;
+            sd.sname = "";
+            sd.mothername = "";
+            sd.fathername = "";
+            return View(sd);
+        }
+        [HttpPost]
+        public ActionResult Index(StudentData vsdata,string cbutton)
+        {
+            collegedataEntities colgdata = new collegedataEntities();
+            StudentData updatestudent = new StudentData();
+            if (cbutton=="Search")
+            {
+                int srollno = Convert.ToInt16(vsdata.rollno);
+                
+                StudentData student = (from s in colgdata.StudentDatas where s.rollno == srollno select s).FirstOrDefault();
+                if (student == null)
+                {
+
+                    ViewBag.searchresult = "Roll Number Not Found";
+                    StudentData data = new StudentData();
+                    data.rollno = vsdata.rollno;
+                    data.sname = "";
+                    data.fathername = "";
+                    data.mothername = "";
+
+                    return View(data);
+                }
+                else
+                {
+                    ViewBag.searchresult = "Roll Number Has Been Found";
+                    ModelState.Clear();
+                    return View(student);
+
+                }
+            }
+            else
+            {
+                updatestudent = colgdata.StudentDatas.Find(vsdata.rollno);
+                if (updatestudent != null)
+                {
+                    updatestudent.sname = vsdata.sname;
+                    updatestudent.mothername = vsdata.mothername;
+                    updatestudent.fathername = vsdata.fathername;
+                    colgdata.Entry(updatestudent).State = EntityState.Modified;
+                    colgdata.SaveChanges();
+                    ViewBag.updateresult = "Data Has Been Updated";
+                }
+                else
+                {
+                    ViewBag.updateresult = "Data Has Not Updated";
+                }
+
+                StudentData blanksdata = new StudentData();
+                blanksdata.rollno = 0;
+                blanksdata.sname = "";
+                blanksdata.mothername = "";
+                blanksdata.fathername = "";
+                ModelState.Clear();
+                return View(blanksdata);
+                
+            }
+            
+
+        }
+    }
+
+------------------------------
+
+View Coding
+------------
+
+
+@model Update_Data_Using_EntityFramework_MVC.Models.StudentData
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hariti Study Hub</h1>
+    <h4>Update Data into SQL Database Using Entity Framework Asp.Net MVC</h4>
+    <div>
+        @using (Html.BeginForm("Index", "UpdateData", FormMethod.Post))
+        {
+            <table border="1" bgcolor="lightgreen" width="400px" height="250px">
+                <tr>
+                    <td>Roll Number</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.rollno, "{0:#.#}") <input type="submit" name="cbutton" value="Search" />
+                    <br />
+                    <font color="Green">@ViewBag.searchresult</font>
+                </td>
+            </tr>
+            <tr>
+                <td>Student Name</td>
+                <td>@Html.TextBoxFor(m => m.sname)</td>
+            </tr>
+            <tr>
+                <td>Father Name</td>
+                <td>@Html.TextBoxFor(m => m.fathername)</td>
+            </tr>
+            <tr>
+                <td>Mother Name</td>
+                <td>@Html.TextBoxFor(m => m.mothername)</td>
+            </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" name="cbutton" value="Update" /></td>
+
+
+                    </tr>
+
+
+                    
+</table>
+    
+        }
+    </div>
+    @ViewBag.updateresult
+
+
+
+</body>
+</html>
+
+
+----------------------

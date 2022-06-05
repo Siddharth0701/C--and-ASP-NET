@@ -1,0 +1,79 @@
+Controller Coding
+-------------------
+
+ public class SaveDataController : Controller
+    {
+        // GET: SaveData
+        public ActionResult Index()
+        {
+            ViewBag.saveresult = "";
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Index(StudentData student)
+        {
+            using (collegedataEntities entities = new collegedataEntities())
+            {
+                entities.StudentDatas.Add(student);
+                entities.SaveChanges();
+                ViewBag.saveresult = "Data Has Been Saved Successfully";
+                ModelState.Clear();
+            }
+           
+            return View(new StudentData());
+        }
+    }
+
+------------------
+
+View Coding
+----------
+
+@model Insert_Data_Using_Entity_Framework_in_Asp.Net_MVC.Models.StudentData
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hariti Study Hub</h1>
+    <h4>Insert Data into SQL Database Using Entity Framework Asp.Net MVC</h4>
+    <div> 
+@using (Html.BeginForm("Index", "SaveData", FormMethod.Post))
+{
+    <table border="1" bgcolor="yellow" width="400px" height="250px">
+        <tr>
+            <td>Roll Number</td>
+            <td>@Html.TextBoxFor(m => m.rollno, "{0:#.#}")</td>
+        </tr>
+        <tr>
+            <td>Student Name</td>
+            <td>@Html.TextBoxFor(m => m.sname)</td>
+        </tr>
+        <tr>
+            <td>Father Name</td>
+            <td>@Html.TextBoxFor(m => m.fathername)</td>
+        </tr>
+        <tr>
+            <td>Mother Name</td>
+            <td>@Html.TextBoxFor(m => m.mothername)</td>
+        </tr>
+        
+        <tr>
+            <td colspan="2"><input type="submit" value="Submit" /></td>
+        </tr>
+    </table>
+}
+    </div>
+    <b>@ViewBag.saveresult</b>
+</body>
+</html>
+
+
+----------------------

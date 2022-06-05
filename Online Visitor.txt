@@ -1,0 +1,47 @@
+Global.asax File Coding
+------------------------
+
+void Application_Start(object sender, EventArgs e)
+        {
+            
+            Application["OnlineUsers"] = 0;
+
+
+        }
+
+-------------------------
+
+
+void Session_Start(object sender, EventArgs e)
+        {
+
+            Application.Lock();
+            Application["OnlineUsers"] = (int)Application["OnlineUsers"] + 1;
+            Application.UnLock();
+
+
+        }
+
+--------------------------
+
+
+void Session_End(object sender, EventArgs e)
+        {
+            
+            Application.Lock();
+            Application["OnlineUsers"] = (int)Application["OnlineUsers"] - 1;
+            Application.UnLock();
+        }
+
+--------------------------
+
+Page Load Coding
+
+         Label4.Text = Application["OnlineUsers"].ToString();
+
+--------------------------
+
+Web.Config File Coding
+
+
+ <sessionState mode="InProc" cookieless="false" timeout="10"/>

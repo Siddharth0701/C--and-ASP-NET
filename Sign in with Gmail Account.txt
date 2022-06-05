@@ -1,0 +1,68 @@
+Important Namespaces
+--------------------
+
+using ASPSnippets.GoogleAPI;
+using System.Web.Script.Serialization;
+
+--------------------
+
+Page Load Coding
+------------------
+
+GoogleConnect.ClientId = "Use Your Client ID Here";
+        GoogleConnect.ClientSecret = "Use Your Client Secret Key Here";
+        GoogleConnect.RedirectUri = Request.Url.AbsoluteUri.Split('?')[0];
+
+        if (!string.IsNullOrEmpty(Request.QueryString["code"]))
+        {
+            string code = Request.QueryString["code"];
+            string json = GoogleConnect.Fetch("me", code);
+            GoogleProfile profile = new JavaScriptSerializer().Deserialize<GoogleProfile>(json);
+            Label3.Text = profile.Id;
+            Label4.Text = profile.DisplayName;
+            Label5.Text = profile.Emails.Find(email => email.Type == "account").Value;
+           
+           
+            Image1.ImageUrl = profile.Image.Url;
+            ImageButton1.Visible = false;
+        }
+        if (Request.QueryString["error"] == "access_denied")
+        {
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "alert", "alert('Access denied.')", true);
+        }
+
+
+--------------------
+
+Image button Click Event Coding
+--------------------
+
+GoogleConnect.Authorize("profile", "email");
+
+--------------------
+
+User Defined Classes
+-------------------
+
+public class GoogleProfile
+{
+    public string Id { get; set; }
+    public string DisplayName { get; set; }
+    public Image Image { get; set; }
+    public List<Email> Emails { get; set; }
+    public string Gender { get; set; }
+    public string ObjectType { get; set; }
+}
+
+public class Email
+{
+    public string Value { get; set; }
+    public string Type { get; set; }
+}
+
+public class Image
+{
+    public string Url { get; set; }
+}
+
+---------------------

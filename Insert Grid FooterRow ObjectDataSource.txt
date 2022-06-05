@@ -1,0 +1,57 @@
+protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                GridView1.DataSource = ObjectDataSource1;
+                GridView1.DataBind();
+
+            }
+
+
+        }
+
+
+protected void Button1_Click(object sender, EventArgs e)
+        {
+            ObjectDataSource1.InsertParameters["customerid"].DefaultValue = (GridView1.FooterRow.FindControl("TextBox1") as TextBox).Text;
+            ObjectDataSource1.InsertParameters["customername"].DefaultValue = (GridView1.FooterRow.FindControl("TextBox2") as TextBox).Text;
+            ObjectDataSource1.InsertParameters["city"].DefaultValue = (GridView1.FooterRow.FindControl("TextBox3") as TextBox).Text;
+            ObjectDataSource1.InsertParameters["contact"].DefaultValue = (GridView1.FooterRow.FindControl("TextBox4") as TextBox).Text;
+            ObjectDataSource1.Insert();
+            GridView1.DataSource = ObjectDataSource1;
+            GridView1.DataBind();
+
+        }
+
+----
+
+Class Coding
+
+public DataSet GetCustomerDetail1()
+        {
+            String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=customerdatabase; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String query = "select * from customerdetail";
+            SqlCommand sqlcmd = new SqlCommand();
+            sqlcmd.CommandText = query;
+            sqlcmd.Connection = sqlcon;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = sqlcmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            return ds;
+
+        }
+
+        public int InsertCustomerDetail(int customerid, String customername, String city, String contact)
+        {
+            String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=customerdatabase; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String query = "Insert into customerdetail(customerid,customername,city,contact) values(" + customerid + ",'" + customername + "','" + city + "','" + contact + "')";
+            SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
+            sqlcon.Open();
+            sqlcmd.ExecuteNonQuery();
+            sqlcon.Close();
+            return customerid;
+
+        }

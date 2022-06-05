@@ -1,0 +1,28 @@
+Important Coding For " Book Now " Button in Source Code
+-------------------------------------------------------
+
+<asp:Button ID="Button1" runat="server" BackColor="#FF9933" Height="30px" Text="Book Now" Width="109px" CommandArgument='<%# Eval("movieid")%>' CommandName="booknow" />
+
+-------------------------------------------------------
+ItemCommand Event on DataList Control
+--------------------------------------
+
+if (e.CommandName == "booknow")
+        {
+
+            Button btn = (Button)(e.Item.FindControl("Button1"));
+            Label moviename = (Label)(e.Item.FindControl("Label3"));
+            Response.Redirect("BookTicket.aspx?id=" + e.CommandArgument.ToString() + "&moviename=" +moviename.Text);
+
+        }
+
+--------------------------------------
+
+
+
+Second Webform Coding on Page Load
+----------------------------------
+
+ Label1.Text = "You Want to Book Ticket for Movie ID  " + Request.QueryString["id"].ToString()+"  and Movie Name "+Request.QueryString["moviename"];
+
+----------------------------------

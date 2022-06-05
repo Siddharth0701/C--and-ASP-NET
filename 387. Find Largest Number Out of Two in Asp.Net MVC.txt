@@ -1,0 +1,117 @@
+Model Coding
+----------
+
+namespace Largest_Number_Out_of_Two.Models
+{
+    public class LargerData
+    {
+         public String result {
+            set;
+            get; }
+    }
+}
+
+----------
+
+Controller Coding
+-----------------
+
+using Largest_Number_Out_of_Two.Models;
+
+namespace Largest_Number_Out_of_Two.Controllers
+{
+    public class LargestNumberController : Controller
+    {
+        // GET: LargestNumber
+        public ActionResult Index()
+        {
+            var r = new LargerData();
+            r.result = "";
+            return View(r);
+        }
+        [HttpPost]
+        public ActionResult Index(String a, String b)
+        {
+            var r = new LargerData();
+            int num1 = Convert.ToInt16(a);
+            int num2 = Convert.ToInt16(b);
+            if (num1 > num2)
+            {
+                r.result = "Largest Number is " + num1;
+            }
+            else
+            {
+                r.result = "Largest Number is " + num2;
+            }
+            return View(r);
+        }
+    }
+
+----------------------
+
+View Coding
+------------
+
+@{
+    Layout = null;
+}
+@model Largest_Number_Out_of_Two.Models.LargerData
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div> 
+        <h1>Hariti Study Hub</h1>
+        <h4>Find Largest Number Out of Two Numbers Using Asp.Net MVC</h4>
+        <form action="\LargestNumber\Index" method="post">
+            <table>
+    <tr>
+        <td>First Number</td>
+        <td><input type="text" name="a" /></td>
+    </tr>
+    <tr>
+        <td>Second Number</td>
+        <td><input type="text" name="b" /></td>
+    </tr>
+    <tr>
+        <td colspan="2" align="center"><input type="submit" value="Find Largest" /></td>
+    </tr>
+</table>
+<br />
+@Model.result
+
+
+
+        </form>
+    </div>
+</body>
+</html>
+
+----------------
+
+RouteConfig Coding
+-----------------
+
+amespace Largest_Number_Out_of_Two
+{
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "LargestNumber", action = "Index", id = UrlParameter.Optional }
+            );
+        }
+    }
+}
+
+---------------
+

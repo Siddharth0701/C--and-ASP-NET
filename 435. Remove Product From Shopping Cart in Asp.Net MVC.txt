@@ -1,0 +1,71 @@
+Home Controller Coding ( Specific to Remove Product )
+-----------
+
+TempData["msg"] = "";
+
+-----------
+
+ShowCart Index View Coding
+--------------
+
+ <font color="RED">@TempData["msg"].ToString();</font>
+
+ <td>@Html.ActionLink("Remove", "Index", "RemoveProduct", routeValues: new { sno = row["sno"].ToString(), }, htmlAttributes: null)</td>
+
+--------
+
+ShowCart Controller Coding
+----------
+
+ if(TempData["msg"].ToString()==null)
+            {
+                TempData["msg"] = "";
+            }
+
+-----------
+
+RemoveProduct Controller Coding
+-------
+
+public ActionResult Index(string sno)
+        {
+            DataTable dt = new DataTable();
+            dt = (DataTable)Session["buyitems"];
+            for (int i = 0; i <= dt.Rows.Count - 1; i++)
+            {
+                int sr;
+                int sr1;
+                sr1 = Convert.ToInt32(sno);
+                sr = Convert.ToInt32(dt.Rows[i]["sno"].ToString());
+
+
+                if (sr == sr1)
+                {
+                    dt.Rows[i].Delete();
+                    dt.AcceptChanges();
+                    TempData["msg"] = "Selected Product Has Been Removed";
+                    //Label1.Text = "Item Has Been Deleted From Shopping Cart";
+                    break;
+
+                }
+            }
+
+            for (int i = 1; i <= dt.Rows.Count; i++)
+            {
+                dt.Rows[i - 1]["sno"] = i;
+                dt.AcceptChanges();
+            }
+
+            Session["buyitems"] = dt;
+            return RedirectToAction("Index", "ShowCart");
+        }
+
+-----------
+
+RemoveProduct Index View Coding
+---------
+
+Nothing Required
+
+----------
+

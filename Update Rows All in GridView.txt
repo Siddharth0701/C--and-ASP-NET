@@ -1,0 +1,42 @@
+Important NameSpaces
+-----------------------------
+
+using System.Data;
+using System.Data.SqlClient;
+-----------------------------
+
+
+
+Update Button Click Coding
+---------------------------
+foreach (GridViewRow row in GridView1.Rows)
+            {
+                DropDownList dlist=(row.Cells[2].FindControl("DropDownList1") as DropDownList);
+                int rollno = Convert.ToInt32(row.Cells[0].Text);
+                updaterow(rollno, dlist.Text);
+
+
+
+            }
+            GridView1.DataBind();
+
+-----------------------------
+
+
+
+
+UpdateRow Function Coding
+------------------------------
+private void updaterow(int rollno, String markstatus)
+{
+ String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=AttendanceSystem; Integrated Security=True";
+            String updatedata = "Update lecturedetail set attendance='" + markstatus + "' where rollno=" + rollno;
+            SqlConnection con = new SqlConnection(mycon);
+            con.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = updatedata;
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+            Label2.Text = "Data Has Been Updated";
+}
+------------------------------

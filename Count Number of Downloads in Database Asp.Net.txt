@@ -1,0 +1,113 @@
+Important Coding in ItemTemplate of DataList Control
+------------------------------------------------------
+
+CommandArgument='<%# Eval("fileid")%>' CommandName="downloadfile"
+
+
+------------------------------------------------------
+
+Important Namespaces used
+---------------------------
+
+using System.Data;
+using System.Data.SqlClient;
+using System.Net;
+
+---------------------------
+
+
+PageLoad Coding
+---------------------------
+
+ if(!IsPostBack)
+        {
+            DataList1.DataBind();
+        }
+
+---------------------------
+
+
+DataList ItemCommand Event Coding
+-----------------------------------
+
+ if (e.CommandName == "downloadfile")
+        {
+            updatedownload(e.CommandArgument.ToString());
+            String fileurl = FileLink(e.CommandArgument.ToString());
+            WebClient req = new WebClient();
+            HttpResponse hr = HttpContext.Current.Response;
+            hr.Clear();
+            hr.ClearContent();
+            hr.ClearHeaders();
+            hr.Buffer = true;
+            hr.AddHeader("Content-Disposition", "attachment;filename=\"" + e.CommandArgument.ToString()+".jpg" + "\"");
+            byte[] filedownload = req.DownloadData(Server.MapPath(fileurl));
+            hr.BinaryWrite(filedownload);
+            hr.End();
+            
+            
+        }
+
+-------------------------------------
+
+
+User Defined Methods
+
+--------------------------------------
+
+ private String FileLink(String fileid1)
+    {
+        String fileurl="";
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=FileData; Integrated Security=True";
+        String myquery = "Select * from filedetails where fileid=" + Convert.ToInt16(fileid1);
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+
+
+            fileurl = ds.Tables[0].Rows[0]["FileLink"].ToString();
+           
+        }
+        con.Close();
+        return (fileurl);
+    }
+    private void updatedownload(String fileid1)
+    {
+        int downloadcount = 0;
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=FileData; Integrated Security=True";
+        String myquery = "Select * from filedetails where fileid=" + Convert.ToInt16(fileid1);
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+
+
+            downloadcount = Convert.ToInt16(ds.Tables[0].Rows[0]["DownloadCount"].ToString() );
+            downloadcount = downloadcount +1;
+        }
+        con.Close();
+        String updatedata = "Update FileDetails set DownloadCount=" +downloadcount+ " where fileid="+Convert.ToInt16(fileid1);
+        SqlConnection con1 = new SqlConnection(mycon);
+        con.Open();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+        con.Close();
+    }
+
+
+----------------------------
+

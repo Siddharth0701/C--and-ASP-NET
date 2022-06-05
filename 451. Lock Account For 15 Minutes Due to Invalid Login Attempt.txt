@@ -1,0 +1,137 @@
+Coding Example : How to Lock Account For 15 Minutes Due to Invalid Login Attempt 
+
+PageLoad Coding
+---------------
+  if (IsPostBack)
+        {
+
+        }
+        else
+        {
+         // Label2.Text = DateTime.Now.ToString();
+            Session["invalidloginattempt"] = null;
+        }
+
+-------
+
+Login Button Click Coding
+------------------------
+
+ String mycon = "Data Source=HP-PC\\SQLEXPRESS;Initial Catalog=BankingSystem;Integrated Security=True";
+        SqlConnection scon = new SqlConnection(mycon);
+        String myquery = "select username,password,locked,lockdatetime from userlogin where username='"+TextBox1.Text+"'";
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = scon;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        String uname;
+        String pass;
+        bool lockstatus;
+        DateTime locktimedate=DateTime.Now;
+        if (ds.Tables[0].Rows.Count == 0)
+        {
+            Label2.Text = "Invalid Username or Password - Relogin.";
+        }
+        else
+        {
+            uname = ds.Tables[0].Rows[0]["username"].ToString();
+            pass = ds.Tables[0].Rows[0]["password"].ToString();
+            lockstatus = Convert.ToBoolean(ds.Tables[0].Rows[0]["locked"].ToString());
+            if (lockstatus==true)
+            {
+                locktimedate = Convert.ToDateTime(ds.Tables[0].Rows[0]["lockdatetime"].ToString());
+                locktimedate = Convert.ToDateTime(locktimedate.ToString("dd/MM/yyyy HH:mm:ss"));
+                // Response.Write("Locked Date time is " + locktimedate);
+                //  Response.Write("Current Date time is " + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss"));
+            }
+           
+            scon.Close();
+            if (lockstatus == true)
+            {
+                DateTime cdatetime = Convert.ToDateTime(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                TimeSpan ts = cdatetime.Subtract(locktimedate);
+                Int32 minuteslocked = Convert.ToInt32(ts.TotalMinutes);
+                Int32 pendingminutes = 15 - minuteslocked;
+                if (pendingminutes <= 0)
+                {
+
+                    unlockaccount();
+                  //  Response.Write("Account Has Been Unlocked");
+
+                }
+                else
+                {
+                    Label2.Text = "You account has been locked for 15 Minutes for Three Invalid Attempts. You account will be Unlocked Automatically with " + pendingminutes + " Minutes";
+                }
+
+               
+            }
+            else
+            {
+                if (uname == TextBox1.Text && pass == TextBox2.Text)
+                {
+                    Session["username"] = uname;
+
+                    Response.Redirect("Homepage.aspx");
+                }
+                else
+                {
+
+                    int attemptcount;
+                    if (Session["invalidloginattempt"] != null)
+                    {
+                        attemptcount = Convert.ToInt16(Session["invalidloginattempt"].ToString());
+                        attemptcount = attemptcount + 1;
+                    }
+                    else
+                    {
+                        attemptcount = 1;
+                    }
+                    Session["invalidloginattempt"] = attemptcount;
+                    if (attemptcount == 3)
+                    {
+                        Label2.Text = "You account has been locked for 15 Minutes for Three Invalid Attempts. Your account will be Unlocked Automatically with 15 Minutes ";
+                        changelockstatus();
+                    }
+                    else
+                    {
+                        Label2.Text = "Invalid Username or Password - Relogin. You have " + (3 - attemptcount) + " remaining to login";
+                    }
+                }
+            }
+        
+        
+           
+        }
+
+
+--------------
+
+Implement Two Methods
+
+ void changelockstatus()
+    {
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS;Initial Catalog=BankingSystem;Integrated Security=True";
+        string format = "MM/dd/yyyy HH:mm:ss";
+        String updatedata = "Update userlogin set locked=1, lockdatetime='" + DateTime.Now.ToString(format) + "' where username='" + TextBox1.Text+"'";
+        SqlConnection con = new SqlConnection(mycon);
+        con.Open();
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+    }
+    void unlockaccount()
+    {
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS;Initial Catalog=BankingSystem;Integrated Security=True";
+        String updatedata = "Update userlogin set locked=0, lockdatetime=NULL where username='" + TextBox1.Text + "'";
+        SqlConnection con = new SqlConnection(mycon);
+        con.Open();
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+    }

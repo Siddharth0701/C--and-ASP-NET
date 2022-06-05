@@ -1,0 +1,36 @@
+            System.Collections.Specialized.ListDictionary ls = new System.Collections.Specialized.ListDictionary();
+            ls.Add("customerid", (GridView1.FooterRow.FindControl("TextBox1") as TextBox).Text);
+            ls.Add("customername", (GridView1.FooterRow.FindControl("TextBox2") as TextBox).Text);
+            ls.Add("city", (GridView1.FooterRow.FindControl("TextBox3") as TextBox).Text);
+            ls.Add("contact", (GridView1.FooterRow.FindControl("TextBox4") as TextBox).Text);
+            LinqDataSource1.Insert(ls);
+            GridView1.DataSource = LinqDataSource1;
+            GridView1.DataBind();
+
+---
+Page Load Coding
+
+            if (!IsPostBack)
+            {
+                GridView1.DataSource = LinqDataSource1;
+                GridView1.DataBind();
+            }
+
+---------------------
+
+using (StudentDataEntities dbCd = new StudentDataEntities())
+            {
+                StudentInfo cd = new StudentInfo();
+                cd.srollno = Convert.ToInt32(TextBox1.Text);
+                cd.sname = TextBox2.Text;
+                cd.fname = TextBox3.Text;
+                cd.city = TextBox4.Text;
+                dbCd.StudentInfoes.AddObject(cd);
+                dbCd.SaveChanges();
+            }
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+            TextBox3.Text = "";
+            TextBox4.Text = "";
+            Label2.Text = "Data Has Been Saved";
+            GridView1.DataBind();

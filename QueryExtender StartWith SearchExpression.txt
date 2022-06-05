@@ -1,0 +1,3 @@
+<asp:SearchExpression DataFields="sname" SearchType="StartsWith">
+        <asp:ControlParameter ControlID="TextBox1" />
+        </asp:SearchExpression>

@@ -1,0 +1,42 @@
+Important Namespaces Used
+------------------------
+
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
+
+------------------------
+
+Page Load Coding
+----------------
+
+  if (!IsPostBack)
+        {
+            string[] filePaths = Directory.GetFiles(Server.MapPath("~/UploadedFiles/"));
+            DataTable dt = new DataTable();
+            DataRow dr;
+            dt.Columns.Add("filename");
+            foreach (string filePath in filePaths)
+            {
+                //files.Add(new ListItem(Path.GetFileName(filePath), filePath));
+                dr = dt.NewRow();
+                dr["filename"] = Path.GetFileName(filePath).ToString();
+                dt.Rows.Add(dr);
+            }
+            GridView1.DataSource = dt;
+            GridView1.DataBind();
+        }
+
+---------------
+
+GridView SelectedIndex Changed Event Coding
+---------
+
+ GridViewRow gr = GridView1.SelectedRow;
+        string filePath = Server.MapPath("~/UploadedFiles/"+ gr.Cells[0].Text);
+        Response.ContentType = ContentType;
+        Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
+        Response.WriteFile(filePath);
+        Response.End();
+
+------------------

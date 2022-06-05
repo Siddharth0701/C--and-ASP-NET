@@ -1,0 +1,19 @@
+use studentdata
+create procedure GetStudetData1
+as
+begin
+select srollno,sname,fname,city from studentinfo
+end
+
+0----
+
+String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "GetStudetData1"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            GridView1.EmptyDataText = "No Record Retrieved";
+            GridView1.DataSource = com.ExecuteReader();
+            GridView1.DataBind();
+            sqlcon.Close();

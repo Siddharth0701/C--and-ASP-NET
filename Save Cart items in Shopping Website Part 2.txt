@@ -1,0 +1,68 @@
+Page Load Coding
+-----------------
+
+if (Session["username"] == null)
+        {
+            Label2.Text = "Hello Guest,";
+            LinkButton2.Visible = true;
+            LinkButton1.Visible = false;
+        }
+        else
+        {
+            Label2.Text = "Hello " + Session["username"].ToString();
+            LinkButton1.Visible = true;
+            LinkButton2.Visible = false;
+
+        }
+        DataTable dt = new DataTable();
+        dt = (DataTable)Session["buyitems"];
+        if (dt != null)
+        {
+
+            Label3.Text = dt.Rows.Count.ToString();
+        }
+        else
+        {
+            Label3.Text = "0";
+
+        }
+
+------------------
+
+Login LinkButton Click Coding
+----------------------------
+
+Response.Redirect("LoginPage.aspx");
+
+-----------------------------
+
+Signout LinkButton Click Coding
+------------------------
+
+ Session.Abandon();
+        Response.Redirect("Homepage.aspx");
+
+---------------------
+
+ViewCart Link Button Coding
+---------
+
+ Response.Redirect("AddtoCart.aspx");
+
+----------
+
+
+DataList itemCommand Coding
+-----------
+
+     
+        Response.Redirect("AddtoCart.aspx?id=" + e.CommandArgument.ToString() + "&quantity=1");
+
+--------------
+
+Properties of ImageButton
+-----------
+
+CommandArgument : <%# Eval("productid")%>
+
+CommandName : addtocart

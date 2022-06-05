@@ -1,0 +1,13 @@
+
+
+Custom SQL Query
+-------------------
+
+SELECT name FROM master.sys.databases
+
+------------
+GridView Selected Index Changed Coding
+------------
+
+GridViewRow gr = GridView1.SelectedRow;
+Response.Redirect("DisplayTable.aspx?database=" + gr.Cells[0].Text);

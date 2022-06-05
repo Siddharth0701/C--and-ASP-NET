@@ -1,0 +1,63 @@
+create procedure DeleteStudent3
+(
+  @strollno int
+)
+as
+begin
+delete from studentinfo where srollno=@strollno
+end
+-------------
+create procedure SearchStudent4
+(
+  @strollno int
+)
+as
+begin
+Select * from studentinfo where srollno=@strollno
+end
+
+
+----------------------------------------------------------
+Search Button
+
+String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "SearchStudent4"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@strollno", Convert.ToInt32(TextBox1.Text));
+            SqlDataReader dr;
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                TextBox2.Text = dr["sname"].ToString();
+                TextBox3.Text = dr["fname"].ToString();
+                TextBox4.Text = dr["city"].ToString();
+                Label2.Text = "Data Has Been Found";
+            }
+            else
+            {
+                TextBox2.Text = "";
+                TextBox3.Text = "";
+                TextBox4.Text = "";
+                Label2.Text = "Data Has Not Been Found";
+            }
+
+
+            sqlcon.Close();
+
+----------------------------------------------------------
+
+Delete Button
+
+            String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "DeleteStudent3"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@strollno", Convert.ToInt32(TextBox1.Text));
+            com.ExecuteNonQuery();
+            sqlcon.Close();
+            Label3.Text = "Data Has Been Deleted in Database";

@@ -1,0 +1,5 @@
+            GridViewRow gr = GridView1.SelectedRow;
+            TextBox1.Text = gr.Cells[1].Text;
+            TextBox2.Text = gr.Cells[2].Text;
+            TextBox3.Text = gr.Cells[3].Text;
+            TextBox4.Text = gr.Cells[4].Text;

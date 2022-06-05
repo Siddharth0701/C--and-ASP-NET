@@ -1,0 +1,37 @@
+Important Namespaces
+-------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+-------------------
+
+Page Load Coding
+-------------------
+
+        string databaseid = Request.QueryString["database"].ToString();
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=" + databaseid + "; Integrated Security=True";
+        String myquery = "SELECT name FROM sys.Tables";
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        GridView1.DataSource = ds;
+        GridView1.DataBind();
+        con.Close();
+
+--------------------
+
+GridView Selected Index Changed Coding
+-------------------------------------
+
+GridViewRow gr = GridView1.SelectedRow;
+Response.Redirect("DisplayData.aspx?tablename=" + gr.Cells[0].Text+"&database="+ Request.QueryString["database"].ToString());
+
+
+
+---------------------------------------

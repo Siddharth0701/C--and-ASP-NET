@@ -1,0 +1,45 @@
+First Page
+-------------
+
+GridView Selected Index Changed Event
+-----------------------------------
+
+        string rollno= GridView1.SelectedRow.Cells[0].Text;
+        Response.Redirect("ShowData.aspx?rollno=" + rollno);
+
+-----------------------------------
+
+ShowData.aspx
+-------------
+
+Important Namespaces Used
+----------------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+---------------------------
+
+PageLoad Event Coding
+----------------------
+
+ String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=True";
+        String myquery = "Select * from studentdata where rollno=" + Request.QueryString["rollno"];
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            TextBox1.Text= ds.Tables[0].Rows[0]["rollno"].ToString();
+            TextBox2.Text = ds.Tables[0].Rows[0]["sname"].ToString();
+            TextBox3.Text = ds.Tables[0].Rows[0]["fathername"].ToString();
+            TextBox4.Text = ds.Tables[0].Rows[0]["mothername"].ToString();
+        }
+        con.Close();
+
+----------------------------

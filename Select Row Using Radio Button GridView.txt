@@ -1,0 +1,43 @@
+TemplateField Coding
+----
+<asp:TemplateField HeaderText="Select">
+<ItemTemplate>
+<input name="RadioButton1" type="radio" value='<%# Eval("sno") %>' onclick="javascript.myselection(this.id)" />
+</ItemTemplate>
+</asp:TemplateField>
+-----
+
+Script Coding
+
+<script language="javascript" type="text/javascript">
+        function myselection(rbtnid) {
+            var rbtn = document.getElementById(rbtnid);
+            var rbtnlist = document.getElementsByTagName("input");
+            for (i = 0; i < rbtnlist.length; i++) {
+                if (rbtnlist[i].text == "radio" && rbtnlist[i].id != rbtn.id) {
+                    rbtnlist[i].checked = false;
+
+                }
+            }
+        }
+    </script>
+
+------
+ 
+Page Load Coding
+
+if (!IsPostBack)
+{
+  GridView1.DataSource = SqlDataSource1;
+  GridView1.DataBind();
+}
+
+----
+
+Button Click
+
+int sno = Convert.ToInt32( Request.Form["RadioButton1"]);
+String mobilename = GridView1.Rows[sno - 1].Cells[1].Text;
+String companyname = GridView1.Rows[sno - 1].Cells[2].Text;
+String price = GridView1.Rows[sno - 1].Cells[3].Text;
+Label2.Text = "You Have Selected Mobile "+mobilename+" with Company Name "+companyname+" Price "+price;

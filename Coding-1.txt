@@ -1,0 +1,19 @@
+using System.Data.OleDb;
+using System.Data;
+------------------------------
+
+
+        public OleDbConnection con;
+        public OleDbDataAdapter dad;
+        public OleDbCommand com;
+        public DataSet ds;
+
+Page Load Coding
+------------------------------
+ con = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source=" + Server.MapPath("~/App_Data/CustomerDatabase.accdb") + "; Persist Security Info=False");
+            con.Open();
+            dad = new OleDbDataAdapter("select * from customerdetail", con);
+            ds = new DataSet();
+            dad.Fill(ds);
+            GridView1.DataSource = ds;
+            GridView1.DataBind();

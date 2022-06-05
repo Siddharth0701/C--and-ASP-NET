@@ -1,0 +1,7 @@
+int crow;
+            crow = Convert.ToInt32(e.CommandArgument.ToString());
+            
+            Label2.Text = GridView1.Rows[crow].Cells[0].Text;
+            Label3.Text = GridView1.Rows[crow].Cells[1].Text;
+            Label4.Text = GridView1.Rows[crow].Cells[2].Text;
+            Label5.Text = GridView1.Rows[crow].Cells[3].Text;

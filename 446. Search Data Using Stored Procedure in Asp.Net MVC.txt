@@ -1,0 +1,150 @@
+Stored Procedure Creation
+---------------------------
+
+use collegedata
+create procedure SearchStudent
+(
+  @srollno int
+)
+as
+begin
+Select * from studentdata where rollno=@srollno
+end
+
+---------------------------
+
+Model Class Coding
+------------------
+
+namespace SearchData_with_Stored_Procedure.Models
+{
+    public class StudentData
+    {
+            public string rollno
+            {
+                get;
+                set;
+            }
+            public string sname
+            {
+                get;
+                set;
+            }
+
+            public string fname
+            {
+                get;
+                set;
+
+            }
+            public string mname
+            {
+                get;
+                set;
+            }
+        }
+    }
+
+--------------------------
+
+
+Controller Coding
+-----------------------
+
+using SearchData_with_Stored_Procedure.Models;
+using System.Data;
+using System.Data.SqlClient;
+
+----------------------
+
+public class HomeController : Controller
+    {
+        // GET: Home
+        public ActionResult Index()
+        {
+            ViewBag.searchresult = "";
+            StudentData sd = new StudentData();
+            sd.rollno = "" ;
+            sd.sname = "";
+            sd.fname = "";
+            sd.mname = "";
+            return View(sd);
+        }
+        [HttpPost]
+        public ActionResult Index(string rollno)
+        {
+            StudentData sd = new StudentData();
+            DataSet ds = new DataSet();
+            String constring = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            String pname = "SearchStudent"; ;
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand(pname, sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@srollno", Convert.ToInt32(rollno));
+            SqlDataReader dr;
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                ViewBag.searchresult = "Roll Number Has Been Found";
+                sd.rollno = rollno;
+                sd.sname = dr["sname"].ToString();
+                sd.fname = dr["fathername"].ToString();
+                sd.mname = dr["mothername"].ToString();
+                
+            }
+            else
+            {
+                
+                sd.sname = "";
+                sd.fname = "";
+                sd.mname = "";
+                ViewBag.searchresult = "Roll Number Not Found";
+            }
+
+
+            sqlcon.Close();
+
+
+            return View(sd);
+        }
+
+    }
+
+---------------------------
+
+
+View Coding
+-------------------
+
+ <h1>Hariti Study Hub</h1>
+    <h4>Search Data From SQL Server Database Using Asp.Net MVC C#</h4>
+    <div>
+        <form action="/Home/Index" method="post">
+            <table border="1" width="500" height="300" bgcolor="lightgreen">
+                <tr>
+                    <td>Roll No</td>
+                    <td><input type="text" name="rollno" value="@Model.rollno" /><input type="submit" name="search" value="Search" /><br /><font color="RED">@ViewBag.searchresult</font></td>
+
+
+                </tr>
+                <tr>
+                    <td>Student Name</td>
+                    <td><input type="text" name="sname" value="@Model.sname" /></td>
+                </tr>
+                <tr>
+                    <td>Father Name</td>
+                    <td><input type="text" name="fname" value="@Model.fname" /></td>
+                </tr>
+                <tr>
+                    <td>Mother Name</td>
+                    <td><input type="text" name="mname" value="@Model.mname" /></td>
+                </tr>
+
+            </table>
+
+        </form>
+    </div>
+
+------------------
+

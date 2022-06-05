@@ -1,0 +1,23 @@
+Button Click Coding ( Save Button )            
+--------------------------------------------------------------------------------------------------------------------
+
+
+	    System.Collections.Specialized.ListDictionary ls = new System.Collections.Specialized.ListDictionary();
+            ls.Add("customerid", (GridView1.FooterRow.FindControl("TextBox1") as TextBox).Text);
+            ls.Add("customername", (GridView1.FooterRow.FindControl("TextBox2") as TextBox).Text);
+            ls.Add("city", (GridView1.FooterRow.FindControl("TextBox3") as TextBox).Text);
+            ls.Add("contact", (GridView1.FooterRow.FindControl("TextBox4") as TextBox).Text);
+            LinqDataSource1.Insert(ls);
+            GridView1.DataSource = LinqDataSource1;
+            GridView1.DataBind();
+
+--------------------------------------------------------------------------------------------------------------------
+Page Load Coding
+
+            if (!IsPostBack)
+            {
+                GridView1.DataSource = LinqDataSource1;
+                GridView1.DataBind();
+            }
+
+---------------------------------------------------------------------------------------------------------------------

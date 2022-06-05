@@ -1,0 +1,32 @@
+Page Load Coding
+-----------------
+if (!IsPostBack)
+            {
+                GridView1.DataSource = EntityDataSource1;
+                GridView1.DataBind();
+
+            }
+
+-------------------------------------------------------------
+
+Button Click Coding ( Save Button )
+
+ String t1 = (GridView1.FooterRow.FindControl("TextBox2") as TextBox).Text;
+            String t2 = (GridView1.FooterRow.FindControl("TextBox3") as TextBox).Text;
+            String t3 = (GridView1.FooterRow.FindControl("TextBox4") as TextBox).Text;
+            String t4 = (GridView1.FooterRow.FindControl("TextBox5") as TextBox).Text;
+
+            using (StudentDataEntities1 dbCd = new StudentDataEntities1())
+            {
+                StudentInfo cd = new StudentInfo();
+                cd.srollno = Convert.ToInt32(t1);
+                cd.sname = t2;
+                cd.fname = t3;
+                cd.city = t4;
+                dbCd.StudentInfoes.AddObject(cd);
+                dbCd.SaveChanges();
+            }
+            GridView1.DataSource = EntityDataSource1;
+            GridView1.DataBind();
+            Label6.Text = "Data Has Been Inserted";
+----------------------------------------------------------------

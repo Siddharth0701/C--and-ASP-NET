@@ -1,0 +1,58 @@
+Upload Button Click Coding
+---------------------------
+ HttpFileCollection hfc = Request.Files;
+            for (int i = 0; i < hfc.Count; i++)
+            {
+                HttpPostedFile hpf = hfc[i];
+                if (hpf.ContentLength > 0)
+                {
+                    hpf.SaveAs(Server.MapPath("UploadFiles") + "\\" + Path.GetFileName(hpf.FileName));
+                    if (i == 0)
+                    {
+                        Image1.ImageUrl = "UploadFiles\\" + Path.GetFileName(hpf.FileName);
+                    }
+                    if (i == 1)
+                    {
+                        Image2.ImageUrl = "UploadFiles\\" + Path.GetFileName(hpf.FileName);
+                    }
+                    if (i == 2)
+                    {
+                        Image3.ImageUrl = "UploadFiles\\" + Path.GetFileName(hpf.FileName);
+                    }
+                    if (i == 3)
+                    {
+                        Image4.ImageUrl = "UploadFiles\\" + Path.GetFileName(hpf.FileName);
+                    }
+                    if (i == 4)
+                    {
+                        Image5.ImageUrl = "UploadFiles\\" + Path.GetFileName(hpf.FileName);
+                    }
+                    
+                }
+            }
+
+===================================
+
+Web.Config Coding
+-----------------------------------
+<httpRuntime
+               executionTimeout="200"
+               maxRequestLength="8192"
+               requestLengthDiskThreshold="256"
+               useFullyQualifiedRedirectUrl="false"
+               minFreeThreads="8"
+               minLocalRequestFreeThreads="4"
+               appRequestQueueLimit="5000"
+               enableKernelOutputCache="true"
+               enableVersionHeader="true"
+               requireRootedSaveAsPath="true"
+               enable="true"
+               shutdownTimeout="90"
+               delayNotificationTimeout="5"
+               waitChangeNotification="0"
+               maxWaitChangeNotification="0"
+               enableHeaderChecking="true"
+               sendCacheControlHeader="true"
+               apartmentThreading="false"/>
+
+------------------------------------

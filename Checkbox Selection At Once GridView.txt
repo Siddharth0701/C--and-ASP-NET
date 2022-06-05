@@ -1,0 +1,56 @@
+Submit Button Click
+-----------------------
+ ListBox1.Items.Clear();
+
+
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                CheckBox chk = GridView1.Rows[i].FindControl("CheckBox1") as CheckBox;
+                if (chk.Checked)
+                {
+                    ListBox1.Items.Add(GridView1.Rows[i].Cells[2].Text);
+
+                }
+
+            }
+
+
+
+
+
+
+------------------------
+
+
+Script Coding Under Head Tag in HTML
+--------------------------------------
+ <script language="javascript" type="text/javascript">
+        function selectallbox(headercheck) {
+            var ischecked = headercheck.checked;
+            Parent = document.getElementById('GridView1');
+            var item = Parent.getElementsByTagName('input');
+            for (i = 0; i < item.length; i++) 
+            {
+                if (item[i].id != headercheck && item[i].type == "checkbox") 
+                {
+                    if (item[i].checked != ischecked) {
+                        item[i].click();
+
+
+                    }
+                }
+
+            }
+
+        }
+        
+    </script>
+
+----------------------------------------
+
+Coding Under HeadTemplate in GridView
+----------------------------------------
+ <asp:CheckBox ID="CheckBox2" runat="server" Text="Select All" onclick="javascript:selectallbox(this);"/>
+
+
+----------------------------------------

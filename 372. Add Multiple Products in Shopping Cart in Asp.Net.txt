@@ -1,0 +1,101 @@
+Important Namespaces
+--------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+----------------------
+
+Add to Cart Image Button Click Event
+------------------------------------
+
+ DataTable dt = new DataTable();
+        DataRow dr;
+        dt.Columns.Add("sno");
+        dt.Columns.Add("pizzaid");
+        dt.Columns.Add("productname");
+        dt.Columns.Add("psize");
+        dt.Columns.Add("price");
+        dt.Columns.Add("productimage");
+        foreach (DataListItem item in DataList1.Items)
+        {
+            Label pizzaid = item.FindControl("Label3") as Label;
+            CheckBox selectedpizza= item.FindControl("CheckBox1") as CheckBox;
+            if(selectedpizza.Checked)
+            {
+                if (Session["Buyitems"] == null)
+                {
+
+                    dr = dt.NewRow();
+                    String mycon = "Data Source=HP-PC\\SQLEXPRESS;Initial Catalog = pizzahouse; Integrated Security = True";
+                    SqlConnection scon = new SqlConnection(mycon);
+                    String myquery = "select * from pizzadetails where pizzaid=" + pizzaid.Text;
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandText = myquery;
+                    cmd.Connection = scon;
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = cmd;
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    dr["sno"] = 1;
+                    dr["pizzaid"] = ds.Tables[0].Rows[0]["pizzaid"].ToString();
+                    dr["productname"] = ds.Tables[0].Rows[0]["name"].ToString();
+                    dr["psize"] = ds.Tables[0].Rows[0]["size"].ToString();
+                    dr["productimage"] = ds.Tables[0].Rows[0]["pimage"].ToString();
+                    dr["price"] = ds.Tables[0].Rows[0]["price"].ToString();
+                    dt.Rows.Add(dr);
+                    Session["buyitems"] = dt;
+                }
+                else
+                {
+
+                    dt = (DataTable)Session["buyitems"];
+                    int sr;
+                    sr = dt.Rows.Count;
+
+                    dr = dt.NewRow();
+                    String mycon = "Data Source=HP-PC\\SQLEXPRESS;Initial Catalog = pizzahouse; Integrated Security = True";
+                    SqlConnection scon = new SqlConnection(mycon);
+                    String myquery = "select * from pizzadetails where pizzaid=" + pizzaid.Text;
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandText = myquery;
+                    cmd.Connection = scon;
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = cmd;
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+                    dr["sno"] = sr + 1;
+                    dr["pizzaid"] = ds.Tables[0].Rows[0]["pizzaid"].ToString();
+                    dr["productname"] = ds.Tables[0].Rows[0]["name"].ToString();
+                    dr["psize"] = ds.Tables[0].Rows[0]["size"].ToString();
+                    dr["productimage"] = ds.Tables[0].Rows[0]["pimage"].ToString();
+                    dr["price"] = ds.Tables[0].Rows[0]["price"].ToString();
+                    dt.Rows.Add(dr);
+                    Session["buyitems"] = dt;
+
+                }
+            }
+
+        }
+        Response.Redirect("ShowCart.aspx");
+
+-------------------------------
+
+ShowCart.aspx Page
+------------------
+
+Important Namespaces Used
+---------------------------
+
+using System.Data;
+
+-------------------------
+
+Page Load Coding
+-------------------------
+
+        DataTable dt;
+        dt = (DataTable)Session["buyitems"];
+        GridView1.DataSource = dt;
+        GridView1.DataBind();
+--------------------------

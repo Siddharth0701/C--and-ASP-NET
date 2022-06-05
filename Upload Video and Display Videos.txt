@@ -1,0 +1,27 @@
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+-------
+
+String constring = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=HTube; Integrated Security=true";
+            SqlConnection sqlcon = new SqlConnection(constring);
+            FileUpload1.SaveAs(Server.MapPath("~/video/") + Path.GetFileName(FileUpload1.FileName));
+            String link = "video/" + Path.GetFileName(FileUpload1.FileName);
+            link = "<Video width=400 Controls><Source src=" + link + " type=video/mp4></video>";
+
+
+            String query = "Insert into videodata(name,authorname,videolink) values('" + TextBox1.Text + "','" + TextBox2.Text + "','" + link + "')";
+            SqlCommand cmd = new SqlCommand(query, sqlcon);
+            sqlcon.Open(); ;
+            cmd.ExecuteNonQuery();
+            sqlcon.Close();
+
+            Label2.Text = "Video Data Has Been Uploaded and Saved Successfully";
+            TextBox1.Text = "";
+            TextBox2.Text = "";
+
+--------
+
+Coding in Web.Config
+
+<httpRuntime executionTimeout="240" maxRequestLength="50000" />

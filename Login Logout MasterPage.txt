@@ -1,0 +1,76 @@
+Admin Home Coding
+------------------
+ if (Session["username"] == null)
+            {
+
+
+
+                Response.Redirect("LoginPage.aspx");
+
+
+            }
+
+--------------------
+Login Page Coding
+
+using System.Data;
+using System.Data.SqlClient;
+
+Login Button Click Coding
+
+ String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS;Initial Catalog=videolibrary;Integrated Security=True";
+            SqlConnection scon = new SqlConnection(mycon);
+            String myquery = "select * from logindetail";
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = myquery;
+            cmd.Connection = scon;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            String uname;
+            String pass;
+            uname = ds.Tables[0].Rows[0]["username"].ToString();
+            pass = ds.Tables[0].Rows[0]["password"].ToString();
+            scon.Close();
+            if (uname == TextBox1.Text && pass == TextBox2.Text)
+            {
+                Session["username"] = uname;
+
+                Response.Redirect("AdminHome.aspx");
+            }
+            else
+            {
+                Label4.Text = "Invalid Username or Password - Relogin with Correct Username Password";
+            }
+
+
+=========
+Master Page Load
+
+if (Session["username"] != null)
+            {
+                Label3.Text = "Hello, " + Session["username"].ToString();
+                HyperLink1.Visible = false;
+                LinkButton1.Visible = true;
+
+
+            }
+            else
+            {
+                Label3.Text = "Hello Visitor, Welcome!!!";
+                HyperLink1.Visible = true;
+                LinkButton1.Visible = false;
+               
+
+            }
+
+
+Link Button Click 
+
+ Session.Abandon();
+            Response.Redirect("Signout.aspx");
+
+
+=============
+

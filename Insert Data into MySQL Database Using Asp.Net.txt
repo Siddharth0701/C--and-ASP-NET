@@ -1,0 +1,47 @@
+Step 1 : Download and Install MySQL Server 5.5 
+
+https://dev.mysql.com/downloads/mysql/5.5.html
+
+Step 2: Download and Install MySQL Connector for .Net
+
+https://dev.mysql.com/downloads/connector/net/8.0.html
+
+Step 3: Add MySQL.Data.dll From Program Files(x86) >> MySQL Folder to .Net Project
+
+---------------------------
+
+MySQL Command in Command Line Client
+---------------------------------
+
+Create Database CollegeData;
+
+connect CollegeData;
+
+Create table Studentdata(rollno int,sname varchar(50),fathername varchar(50),mothername varchar(50));
+
+
+---------------------------
+
+Important Namespaces Used
+-------------------------
+
+using MySql.Data.Common;
+using MySql.Data.MySqlClient;
+
+-------------------------
+
+Save Button Click Event Coding
+================================
+
+        String query = "insert into studentdata(rollno,sname,fname,mname) values(" + TextBox1.Text + ",'" + TextBox2.Text + "','" + TextBox3.Text + "','" + TextBox4.Text + "')";
+        String mycon = "Data Source = localhost;port=3306; Initial Catalog=CollegeData; UserId=root; password=123456; sslmode=none";
+        MySqlConnection con = new MySqlConnection(mycon);
+        con.Open();
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.CommandText = query;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+        Label3.Text = "Data Has Been Saved";
+
+-----------------------------
+

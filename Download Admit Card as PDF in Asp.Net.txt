@@ -1,0 +1,74 @@
+Important Namespaces Used
+---------------------------
+
+using System.Data;
+using System.Data.SqlClient;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
+using System.IO;
+
+--------------------------
+
+Search Button Click Event Coding
+--------------------------------
+
+String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=JobApplication; Integrated Security=True";
+        String myquery = "Select * from CandidateDetail where rollno=" + TextBox1.Text;
+        SqlConnection con = new SqlConnection(mycon);
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        SqlDataAdapter da = new SqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            Panel1.Visible = true;
+            // Label3.Text = "Data Found";
+            Label4.Text = TextBox1.Text;
+            Label10.Text = ds.Tables[0].Rows[0]["cname"].ToString();
+            Label6.Text = ds.Tables[0].Rows[0]["appliedjob"].ToString();
+            Label11.Text = ds.Tables[0].Rows[0]["venuefortest"].ToString();
+            Label8.Text = ds.Tables[0].Rows[0]["datetimetest"].ToString();
+            Image1.ImageUrl = "http://localhost:1341/"+ ds.Tables[0].Rows[0]["applicantimage"].ToString();
+        }
+        else
+        {
+            Label9.Text = "Roll Number Not Found";
+
+        }
+        con.Close();
+
+---------------------------------
+
+Download Admit Card as PDF Button Click Event Coding
+--------------------------------------------------
+
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("content-disposition", "attachment;filename=GridViewData.pdf");
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
+        StringWriter sw = new StringWriter();
+        HtmlTextWriter hw = new HtmlTextWriter(sw);
+        Panel1.RenderControl(hw);
+        StringReader sr = new StringReader(sw.ToString());
+        Document pdfDoc = new Document(PageSize.A4, 10, 10, 0, 0);
+        HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+        PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+        pdfDoc.Open();
+        htmlparser.Parse(sr);
+        pdfDoc.Close();
+        Response.Write(pdfDoc);
+        Response.End();
+
+----------------------------
+
+ public override void VerifyRenderingInServerForm(Control control)
+    {
+        /* Verifies that the control is rendered */
+    }
+
+------------------------
+
+EnableEventValidation="false"

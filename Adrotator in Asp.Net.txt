@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Advertisements>
+  <Ad>
+    <ImageUrl>~\Advertisement\1.jpg</ImageUrl>
+    <NavigateUrl>http://www.Website1.com</NavigateUrl>
+    <AlternateText>Website 1</AlternateText>
+    <Impressions>1</Impressions>
+    <TargetURL>_blank</TargetURL>
+    <Keyword>small</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>~\Advertisement\2.jpg</ImageUrl>
+    <NavigateUrl>http://www.Website2.Com</NavigateUrl>
+    <AlternateText>Website 2</AlternateText>
+    <Impressions>1</Impressions>
+    <Keyword>small</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>~\Advertisement\3.jpg</ImageUrl>
+    <NavigateUrl>http://www.Website3.Com</NavigateUrl>
+    <AlternateText>Website 3</AlternateText>
+    <Impressions>1</Impressions>
+    <Keyword>small</Keyword>
+  </Ad>
+  <Ad>
+    <ImageUrl>~\Advertisement\5.jpg</ImageUrl>
+    <NavigateUrl>http://www.Website4.Com</NavigateUrl>
+    <AlternateText>Website 4</AlternateText>
+    <Impressions>1</Impressions>
+    <Keyword>small</Keyword>
+  </Ad>
+  
+</Advertisements>

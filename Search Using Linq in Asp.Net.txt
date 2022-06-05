@@ -1,0 +1,23 @@
+Search Button Click Event Coding
+----------------------------------
+
+StudentDataContext sd = new StudentDataContext();
+
+        StudentData student = (from s in sd.StudentDatas
+                             where s.rollno.ToString() ==TextBox1.Text
+                             select s).FirstOrDefault();
+        if(student==null)
+        {
+            Label3.Text = "No Rollno Found - Search Again";
+        }
+        else
+        {
+            Label3.Text = "Rollno Found Successfully";
+            TextBox2.Text = student.sname;
+            TextBox3.Text = student.fathername;
+            TextBox4.Text = student.mothername;
+        }
+
+
+
+------------------------------------

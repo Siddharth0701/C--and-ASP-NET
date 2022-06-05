@@ -1,0 +1,6 @@
+What is TextBoxWaterMark Extender Control?
+
+The TextBoxWaterMark Extender Control apply watermark behavior on target textbox server control.
+
+When a watermarked textbox control in empty, it display a message in the text input area of the textbox , if someone typed some
+text into the textbox control the watermarked appearance goes away.

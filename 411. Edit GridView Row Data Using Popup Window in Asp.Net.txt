@@ -1,0 +1,70 @@
+Important Coding For ModalPopupExtender
+------------------------------------
+
+<ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" TargetControlID="LinkButton1" PopupControlID="Panel1" CancelControlID="Button2" BackgroundCssClass="modalBackground" runat="server"></ajaxToolkit:ModalPopupExtender>
+
+----------
+
+CSS Coding
+-----------
+
+.modalBackground
+    {
+        background-color: Black;
+        filter: alpha(opacity=40);
+        opacity: 0.4;
+    }
+
+---------
+
+GridView SelectedIndex Change Event Coding
+--------------------------
+
+       TextBox1.Text = GridView1.SelectedRow.Cells[0].Text;
+        TextBox2.Text = GridView1.SelectedRow.Cells[1].Text;
+        TextBox3.Text = GridView1.SelectedRow.Cells[2].Text;
+        TextBox4.Text = GridView1.SelectedRow.Cells[3].Text;
+       TextBox1.Enabled = false;
+        ModalPopupExtender1.Show();
+
+-----------------------------
+
+User Defined Method Used
+----------------------------
+
+ protected void Save(object sender, EventArgs e)
+    {
+        
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=True";
+        String updatedata = "Update studentdata set sname='" + TextBox2.Text + "', fathername='" + TextBox3.Text + "', mothername='" + TextBox4.Text + "' where rollno=" + TextBox1.Text;
+        SqlConnection con = new SqlConnection(mycon);
+        con.Open();
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+        Label3.Text = "Roll Number "+TextBox1.Text+" Data Has Been Updated Successfully";
+        SqlDataSource1.DataBind();
+        GridView1.DataSource = null;
+        GridView1.DataSourceID = "SqlDataSource1";
+        GridView1.SelectedIndex = -1;
+        
+    }
+
+---------------------
+
+Update Button Click Attribute
+--------------
+
+OnClick = "Save"
+
+--------------
+
+Panel Coding
+-------------
+
+
+
+Style="display: none" 
+
+------------

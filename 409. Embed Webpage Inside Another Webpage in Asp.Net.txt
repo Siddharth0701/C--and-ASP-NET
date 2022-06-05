@@ -1,0 +1,23 @@
+Coding for Click to View Button
+-------------------------------
+
+Response.Redirect("ViewPage.aspx?webname=" + TextBox1.Text + "&weblink=" + TextBox2.Text);
+
+----------------------------
+
+ViewPage.aspx Important Coding
+-----------------------------
+
+<iframe id="MyIFrame" runat="server" scrolling="auto" width="100%" height="768px" frameborder="0">sorry</iframe>
+
+
+-----------------------------
+
+Page Load Coding
+--------------------------
+
+ Label3.Text = Request.QueryString["webname"].ToString();
+        Label4.Text = Request.QueryString["weblink"].ToString();
+        MyIFrame.Attributes["src"] = Request.QueryString["weblink"].ToString
+
+-----------------------

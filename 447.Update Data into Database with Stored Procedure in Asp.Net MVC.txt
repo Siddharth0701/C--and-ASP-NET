@@ -1,0 +1,174 @@
+SQL Stored Procedure Coding
+-----------------------------
+
+use CollegeData
+create procedure UpdateStudent
+(
+  @srollno int,
+  @sname varchar(50),
+  @fname varchar(50),
+  @mname varchar(50)
+)
+as
+begin 
+update studentdata set sname=@sname, fathername=@fname, mothername=@mname where rollno=@srollno
+end
+
+--------------------------
+
+Model Coding
+--------------
+public class StudentData
+    {
+            public string rollno
+            {
+                get;
+                set;
+            }
+            public string sname
+            {
+                get;
+                set;
+            }
+
+            public string fname
+            {
+                get;
+                set;
+
+            }
+            public string mname
+            {
+                get;
+                set;
+            }
+        }
+-------------------
+Controller Coding
+--------------------
+
+using System.Data;
+using System.Data.SqlClient;
+
+--------------------
+
+public ActionResult Index()
+        {
+            ViewBag.searchresult = "";
+            ViewBag.updateresult = "";
+            StudentData sd = new StudentData();
+            sd.rollno = "" ;
+            sd.sname = "";
+            sd.fname = "";
+            sd.mname = "";
+            return View(sd);
+        }
+        [HttpPost]
+        public ActionResult Index(string rollno,string cbutton,string sname,string fname,string mname)
+        {
+            StudentData sd = new StudentData();
+            if (cbutton=="Search")
+            {
+                
+                DataSet ds = new DataSet();
+                String constring = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=true";
+                SqlConnection sqlcon = new SqlConnection(constring);
+                String pname = "SearchStudent"; ;
+                sqlcon.Open();
+                SqlCommand com = new SqlCommand(pname, sqlcon);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@srollno", Convert.ToInt32(rollno));
+                SqlDataReader dr;
+                dr = com.ExecuteReader();
+                if (dr.Read())
+                {
+                    ViewBag.searchresult = "Roll Number Has Been Found";
+                    sd.rollno = rollno;
+                    sd.sname = dr["sname"].ToString();
+                    sd.fname = dr["fathername"].ToString();
+                    sd.mname = dr["mothername"].ToString();
+
+                }
+                else
+                {
+
+                    sd.sname = "";
+                    sd.fname = "";
+                    sd.mname = "";
+                    ViewBag.searchresult = "Roll Number Not Found";
+                }
+
+
+                sqlcon.Close();
+                return View(sd);
+            }
+            else
+            {
+                String constring = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=true";
+                SqlConnection sqlcon = new SqlConnection(constring);
+                String pname = "UpdateStudent"; ;
+                sqlcon.Open();
+                SqlCommand com = new SqlCommand(pname, sqlcon);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@srollno", Convert.ToInt32(rollno));
+                com.Parameters.AddWithValue("@sname",sname );
+                com.Parameters.AddWithValue("@fname", fname);
+                com.Parameters.AddWithValue("@mname", mname);
+                com.ExecuteNonQuery();
+                sqlcon.Close();
+                ViewBag.searchresult = "";
+                ViewBag.updateresult = "Roll Number " + rollno + " Has Been Updated Successfully in Database";
+                sd.rollno = rollno;
+                    sd.sname = "";
+                    sd.fname = "";
+                    sd.mname = "";
+                    return View(sd);
+                
+            }
+           
+
+            
+        }
+
+--------------------
+
+View Coding
+-------------------
+
+ <h1>Hariti Study Hub</h1>
+    <h4>Update Data into SQL Server Database with Stored Procedure Using Asp.Net MVC C#</h4>
+    <div>
+        <form action="/Home/Index" method="post">
+            <table border="1" width="500" height="300" bgcolor="lightgreen">
+                <tr>
+                    <td>Roll No</td>
+                    <td><input type="text" name="rollno" value="@Model.rollno" /><input type="submit" name="cbutton" value="Search" /><br /><font color="RED">@ViewBag.searchresult</font></td>
+
+
+                </tr>
+                <tr>
+                    <td>Student Name</td>
+                    <td><input type="text" name="sname" value="@Model.sname" /></td>
+                </tr>
+                <tr>
+                    <td>Father Name</td>
+                    <td><input type="text" name="fname" value="@Model.fname" /></td>
+                </tr>
+                <tr>
+                    <td>Mother Name</td>
+                    <td><input type="text" name="mname" value="@Model.mname" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" name="cbutton" value="Update" />
+                        <br />
+                        <font color="RED">@ViewBag.updateresult</font>
+                    </td>
+                    
+
+                </tr>
+            </table>
+
+        </form>
+    </div>
+
+------------------------

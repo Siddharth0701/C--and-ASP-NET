@@ -1,0 +1,87 @@
+Step 1 : Download and Install MySQL Server 5.5 
+
+https://dev.mysql.com/downloads/mysql/5.5.html
+
+Step 2: Download and Install MySQL Connector for .Net
+
+https://dev.mysql.com/downloads/connector/net/8.0.html
+
+Step 3: Add MySQL.Data.dll From Program Files(x86) >> MySQL Folder to .Net Project
+
+---------------------------
+
+MySQL Command in Command Line Client
+---------------------------------
+
+Create Database CollegeData;
+
+connect CollegeData;
+
+Create table Studentdata(rollno int,sname varchar(50),fathername varchar(50),mothername varchar(50));
+
+
+
+
+
+Important Namespaces Used
+--------------------------
+
+using MySql.Data.MySqlClient;
+using System.Data;
+
+-------------------------
+
+Search Data Button Click Event
+--------------------------------
+
+string mycon = "Data Source = localhost;port=3306; Initial Catalog=CollegeData; UserId=root; password=123456; sslmode=none";
+        String myquery = "Select * from studentData where rollno=" + TextBox1.Text;
+        MySqlConnection con = new MySqlConnection(mycon);
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.CommandText = myquery;
+        cmd.Connection = con;
+        MySqlDataAdapter da = new MySqlDataAdapter();
+        da.SelectCommand = cmd;
+        DataSet ds = new DataSet();
+        da.Fill(ds);
+        if (ds.Tables[0].Rows.Count > 0)
+        {
+            Label3.Text = "Data Has Been Found Successfully";
+            TextBox2.Text = ds.Tables[0].Rows[0]["sname"].ToString();
+            TextBox3.Text = ds.Tables[0].Rows[0]["fname"].ToString();
+            TextBox4.Text = ds.Tables[0].Rows[0]["mname"].ToString();
+            Label4.Text = "";
+        }
+        else
+        {
+            Label3.Text = "Particular Data Not Found";
+            TextBox2.Text = "";
+            TextBox3.Text = "";
+            TextBox4.Text = "";
+            Label4.Text = "";
+
+
+        }
+        con.Close();
+
+----------------------------
+
+Update Button Click Event Coding
+----------------------------------
+
+ string mycon = "Data Source = localhost;port=3306; Initial Catalog=CollegeData; UserId=root; password=123456; sslmode=none";
+        String updatedata = "Update studentdata set sname='" + TextBox2.Text + "', fname='" + TextBox3.Text + "', mname='" + TextBox4.Text + "' where rollno=" + TextBox1.Text;
+        MySqlConnection con = new MySqlConnection(mycon);
+        con.Open();
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+        Label4.Text = "Data Has Been Updated Successfully with Rollno="+TextBox1.Text;
+        TextBox1.Text = "";
+        TextBox2.Text = "";
+        TextBox3.Text = "";
+        TextBox4.Text = "";
+        Label3.Text = "";
+
+---------------------------------

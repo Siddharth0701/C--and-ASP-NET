@@ -1,0 +1,29 @@
+<table border="1" width="35%">
+---------------------------------------
+
+<HeaderTemplate>
+        <tr align="center" bgcolor="aqua">
+        <th>Movie ID</th>
+        <th>Movie Name</th>
+        <th>Movie Picture</th>
+        
+        </HeaderTemplate>
+        <ItemTemplate>
+        </tr>
+        <tr align="center" bgcolor="yellow">
+        <td>
+            <asp:Label ID="Label2" runat="server" Text='<%#Eval("movieid") %>'></asp:Label>
+        </td>
+        <td>
+            <asp:Label ID="Label3" runat="server" Text='<%#Eval("moviename") %>'></asp:Label>
+        </td>
+        <td>
+            <asp:Image ID="Image1" runat="server" src='<%#Eval("picture") %>'/>
+        </td>
+
+        </tr>
+        
+        </ItemTemplate>
+
+
+-----------------------------------------

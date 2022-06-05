@@ -1,0 +1,57 @@
+
+JavaScript Coding 
+-------------------
+<script language="javascript" type="text/javascript">
+         function ColorChange(chkbox) {
+             var IsChecked = chkbox.checked;
+             if (IsChecked) {
+                 chkbox.parentElement.parentElement.style.backgroundColor = '#228b22';
+                 chkbox.parentElement.parentElement.style.color = 'white';
+             } else {
+                 chkbox.parentElement.parentElement.style.backgroundColor = 'white';
+                 chkbox.parentElement.parentElement.style.color = 'black';
+             }
+
+         }
+        
+    </script>
+
+===========================
+
+
+
+
+
+
+ItemTemplate Coding For CheckBox
+---------------------------------
+
+<asp:CheckBox ID="CheckBox1" runat="server" onclick="javascript:ColorChange(this);" />
+
+
+==================================
+
+
+
+
+
+Submit Button Click Coding
+----------------------------
+ ListBox1.Items.Clear();
+
+
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                CheckBox chk = GridView1.Rows[i].FindControl("CheckBox1") as CheckBox;
+                if (chk.Checked)
+                {
+                    ListBox1.Items.Add(GridView1.Rows[i].Cells[2].Text);
+
+                }
+
+            }
+
+
+
+=============================
+

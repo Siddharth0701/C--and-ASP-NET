@@ -1,0 +1,160 @@
+Model Coding
+--------------
+
+namespace Search_Data_Using_MVC.Models
+{
+    public class StudentData
+    {
+        public string rollno
+        {
+            get;
+            set;
+        }
+        public string sname
+        {
+            get;
+            set;
+        }
+
+        public string fname
+        {
+            get;
+            set;
+
+        }
+        public string mname
+        {
+            get;
+            set;
+        }
+    }
+}
+
+------------------
+
+Controller Coding
+------------------
+
+using Search_Data_Using_MVC.Models;
+using System.Data;
+using System.Data.SqlClient;
+
+
+    public class SearchDataController : Controller
+    {
+        // GET: SearchData
+        public ActionResult Index()
+        {
+            ViewBag.searchresult = "";
+            StudentData sd = new StudentData();
+            sd.rollno = "";
+            sd.sname = "";
+            sd.fname = "";
+            sd.mname = "";
+            return View(sd);
+        }
+        [HttpPost]
+        public ActionResult Index(string rollno)
+        {
+            StudentData sd = new StudentData();
+            String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=True";
+            String myquery = "Select * from studentdata where rollno=" + Convert.ToInt32(rollno);
+            SqlConnection con = new SqlConnection(mycon);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = myquery;
+            cmd.Connection = con;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                ViewBag.searchresult = "Roll Number Has Been Found";
+                sd.rollno = rollno;
+                sd.sname = ds.Tables[0].Rows[0]["sname"].ToString();
+                sd.fname = ds.Tables[0].Rows[0]["fathername"].ToString();
+                sd.mname = ds.Tables[0].Rows[0]["mothername"].ToString();
+               
+            }
+            else
+            {
+                ViewBag.searchresult = "Roll Number Has Not Found";
+
+            }
+            con.Close();
+
+            
+            
+            return View(sd);
+        }
+    }
+
+--------------------------------
+
+View Coding
+-------------
+
+@model Search_Data_Using_MVC.Models.StudentData
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hariti Study Hub</h1>
+    <h4>Search Data From SQL Server Database Using Asp.Net MVC C#</h4>
+    <div> 
+        <form action="/SearchData/Index" method="post">
+            <table border="1" width="500" height="300">
+                <tr>
+                    <td>Roll No</td>
+                    <td><input type="text" name="rollno" value="@Model.rollno" /><input type="submit" name="search" value="Search"/><br/><font color="RED">@ViewBag.searchresult</font></td>
+                    
+                    
+                </tr>
+                <tr>
+                    <td>Student Name</td>
+                    <td><input type="text" name="sname" value="@Model.sname"  /></td>
+                </tr>
+                <tr>
+                    <td>Father Name</td>
+                    <td><input type="text" name="fname" value="@Model.fname" /></td>
+                </tr>
+                <tr>
+                    <td>Mother Name</td>
+                    <td><input type="text" name="mname" value="@Model.mname" /></td>
+                </tr>
+
+            </table>
+
+        </form>
+    </div>
+</body>
+</html>
+
+--------------------
+
+RouteConfig Coding
+--------------------
+
+public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "SearchData", action = "Index", id = UrlParameter.Optional }
+            );
+        }
+    }
+
+------------------

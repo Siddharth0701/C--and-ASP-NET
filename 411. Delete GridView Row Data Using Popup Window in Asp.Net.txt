@@ -1,0 +1,69 @@
+Important Coding For ModalPopupExtender
+------------------------------------
+
+<ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" TargetControlID="LinkButton1" PopupControlID="Panel1" CancelControlID="Button2" BackgroundCssClass="modalBackground" runat="server"></ajaxToolkit:ModalPopupExtender>
+
+----------
+
+CSS Coding
+-----------
+
+.modalBackground
+    {
+        background-color: Black;
+        filter: alpha(opacity=40);
+        opacity: 0.4;
+    }
+
+---------
+
+GridView SelectedIndex Change Event Coding
+--------------------------
+
+    Label4.Text = GridView1.SelectedRow.Cells[0].Text;
+        Label5.Text = GridView1.SelectedRow.Cells[1].Text;
+        Label6.Text = GridView1.SelectedRow.Cells[2].Text;
+        Label7.Text = GridView1.SelectedRow.Cells[3].Text;
+        ModalPopupExtender1.Show();
+
+-----------------------------
+
+User Defined Method Used
+----------------------------
+
+ protected void Delete(object sender, EventArgs e)
+    {
+
+        String mycon = "Data Source=HP-PC\\SQLEXPRESS; Initial Catalog=CollegeData; Integrated Security=True";
+        String updatedata = "delete from studentdata where rollno=" + Label3.Text;
+        SqlConnection con = new SqlConnection(mycon);
+        con.Open();
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = updatedata;
+        cmd.Connection = con;
+        cmd.ExecuteNonQuery();
+        Label3.Text = "Roll Number " + Label3.Text + " Data Has Been Deleted Successfully";
+        SqlDataSource1.DataBind();
+        GridView1.DataSource = null;
+        GridView1.DataSourceID = "SqlDataSource1";
+        GridView1.SelectedIndex = -1;
+
+    }
+
+---------------------
+
+Update Button Click Attribute
+--------------
+
+OnClick = "Delete"
+
+--------------
+
+Panel Coding
+-------------
+
+
+
+Style="display: none" 
+
+------------

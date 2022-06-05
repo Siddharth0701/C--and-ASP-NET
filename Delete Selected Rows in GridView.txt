@@ -1,0 +1,44 @@
+Important NameSpaces
+
+
+using System.Data;
+using System.Data.SqlClient;
+------------------------------
+
+
+Delete Row Coding
+------------------------------
+
+        private void deleterow(int rollno)
+        {
+            String mycon = "Data Source=VIKAS-PC\\SQLEXPRESS; Initial Catalog=StudentData; Integrated Security=True";
+            String updatedata = "Delete from studentinfo where srollno=" + rollno;
+            SqlConnection con = new SqlConnection(mycon);
+            con.Open();
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = updatedata;
+            cmd.Connection = con;
+            cmd.ExecuteNonQuery();
+          
+        }
+
+
+------------------------------
+
+
+
+
+Delete Button Click Coding
+--------------------------------
+ foreach (GridViewRow row in GridView1.Rows)
+            {
+                CheckBox cbox = (row.Cells[0].FindControl("CheckBox1") as CheckBox);
+                int rollno = Convert.ToInt32(row.Cells[1].Text);
+                if(cbox.Checked)
+                {
+                deleterow(rollno);
+                }
+            }
+            GridView1.DataBind();
+            Label2.Text = "Selected Rows Data Has Been Deleted";
+-------------------------------

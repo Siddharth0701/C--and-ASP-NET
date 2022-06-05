@@ -1,0 +1,27 @@
+Wizard Finish Button COding
+
+
+ protected void Wizard1_FinishButtonClick(object sender, WizardNavigationEventArgs e)
+        {
+            String sname;
+            String fname;
+            String percentage;
+            String contact;
+            sname = TextBox1.Text;
+            fname = TextBox2.Text;
+            percentage = TextBox3.Text;
+            contact = TextBox4.Text;
+            String siteurl = "WebForm2.aspx?t1=" + sname + "&t2=" + fname + "&t3=" + percentage + "&t4=" + contact;
+            Response.Redirect(siteurl);
+
+        }
+
+----
+Next Page Coding
+ protected void Page_Load(object sender, EventArgs e)
+        {
+            Label2.Text = Request.QueryString["t1"].ToString();
+            Label3.Text = Request.QueryString["t2"].ToString();
+            Label4.Text = Request.QueryString["t3"].ToString();
+            Label5.Text = Request.QueryString["t4"].ToString();
+        }

@@ -1,0 +1,25 @@
+Upload Button Click Event Coding
+-----------------------------
+
+ string path = Path.GetFileName(FileUpload1.FileName);
+        path = path.Replace(" ", "");
+        FileUpload1.SaveAs(Server.MapPath("~/Videos/") + path);
+        String link = "Videos/" + path;
+        Literal1.Text = "<Video width=400 Controls><Source src=" + link + " type=video/mp4></video>";
+        Label3.Text = "Video Uploaded Successfully";
+
+
+-------------------------------
+
+
+Important Namespaces
+---------------------
+
+using System.IO;
+
+---------------------
+
+
+Webconfig Setting
+
+ <httpRuntime targetFramework="4.5.2" executionTimeout="250" maxRequestLength="500000" />
